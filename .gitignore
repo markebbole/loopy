@@ -1,0 +1,6 @@
+CMakeFiles/
+.DS_STORE
+Makefile
+CMakeCache.txt
+Loopy
+*.cmake
