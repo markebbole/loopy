@@ -6,6 +6,7 @@
 
 #include <vector>
 
+// Rotate and scale an image
 struct BasicScaleAndRotateBooty
 {
     float rotationDegrees;
@@ -14,7 +15,7 @@ struct BasicScaleAndRotateBooty
         cv::Mat input = inputs["ImageInput"]->getOutput();
 
         cv::Point2f center(input.cols/2.f, input.rows/2.f);
-        // Rotate by 5 degrees and scale by 0.9
+
         cv::Mat rotation_matrix = cv::getRotationMatrix2D(center, rotationDegrees, scaleFactor);
 
         cv::Mat output;
@@ -24,10 +25,13 @@ struct BasicScaleAndRotateBooty
     }
 };
 
+// Add an overlay image onto a background image.
+// The intensities don't have to add up to 1 because haha
 struct BasicAddBooty
 {
     float backgroundIntensity;
     float overlayIntensity;
+
     cv::Mat operator()(std::map<std::string, LoopyNode *> inputs) {
 
         if (inputs.count("Overlay") == 0) {
@@ -56,51 +60,9 @@ struct BasicAddBooty
     }
 };
 
-// cv::Mat scaleAndRotateFunction(std::map<std::string, LoopyNode *> inputs) {
-
-//     cv::Mat input = inputs["ImageInput"]->getOutput();
-
-//     cv::Point2f center(input.cols/2.f, input.rows/2.f);
-//     // Rotate by 5 degrees and scale by 0.9
-//     cv::Mat rotation_matrix = cv::getRotationMatrix2D(center, 5, 0.9);
-
-//     cv::Mat output;
-//     cv::warpAffine(input, output, rotation_matrix, cv::Size(input.cols, input.rows));
-
-//     return output;
-// }
-
-// cv::Mat addFunction(std::map<std::string, LoopyNode *> inputs) {
-
-//     if (inputs.count("Image1") == 0) {
-//         std::cout << "In first iteration of add" << std::endl;
-//         return inputs["Image2"]->getOutput();
-//     }
-
-//     // Iterate through back layer and add the new image on top of it.
-//     cv::Mat &testInputMat = inputs["Image2"]->getOutput();
-//     cv::Mat &scaled = inputs["Image1"]->getOutput();
-//     cv::Mat output = cv::Mat(testInputMat.rows, testInputMat.cols, testInputMat.type());
-
-//     for (int r = 0; r < testInputMat.rows; r ++) {
-//         for(int c = 0; c < testInputMat.cols; ++c) {
-//             cv::Vec3b point = testInputMat.at<cv::Vec3b>(r,c);
-
-//             int red = MIN(0.4*point[0] + 0.7*scaled.at<cv::Vec3b>(r, c)[0], 255);
-//             int g = MIN(0.4*point[1] + 0.7*scaled.at<cv::Vec3b>(r, c)[1], 255);
-//             int b = MIN(0.4*point[2] + 0.7*scaled.at<cv::Vec3b>(r, c)[2], 255);
-
-//             output.at<cv::Vec3b>(r,c) = cv::Vec3b(red,g,b);
-//         }
-//     }
-
-//     std::cout << "Added image" << std::endl;
-
-//     return output;
-// }
-
 int main() {
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
+
     LoopyInputNode *testImage = new LoopyInputNode("TestInput");
 
     cv::Mat image;
@@ -138,5 +100,4 @@ int main() {
         cv::imshow( "Display window", addNode->getOutput() );
         cv::waitKey(0);
     }
-
 }
