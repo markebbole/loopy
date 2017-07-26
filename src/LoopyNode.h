@@ -28,9 +28,12 @@ struct InputConnection
     bool enforceOnFirstRun;
     std::string parameterName;
 
-    InputConnection(LoopyNode *node, std::string parameterName) : InputConnection(node, parameterName, true) {}
+    InputConnection(LoopyNode *node, std::string parameterName) : InputConnection(node, parameterName, true)
+    {
+    }
 
-    InputConnection(LoopyNode *node, std::string parameterName, bool enforceOnFirstRun) {
+    InputConnection(LoopyNode *node, std::string parameterName, bool enforceOnFirstRun)
+    {
         this->inputNode = node;
         this->enforceOnFirstRun = enforceOnFirstRun;
         this->parameterName = parameterName;
@@ -102,7 +105,8 @@ public:
      * inputConnections: a vector of InputConnections to this node.
      * outputKey: this node's output key.
      */
-    LoopyNode(std::vector<InputConnection> inputConnections, std::string outputKey) {
+    LoopyNode(std::vector<InputConnection> inputConnections, std::string outputKey)
+    {
         outputIterations = 0;
         this->outputKey = outputKey;
         for (size_t i = 0; i < inputConnections.size(); ++i) {
@@ -113,7 +117,9 @@ public:
     /**
      * Constructor with no InputConnections
      */
-    LoopyNode(std::string outputKey) : LoopyNode(std::vector<InputConnection>(), outputKey) {}
+    LoopyNode(std::string outputKey) : LoopyNode(std::vector<InputConnection>(), outputKey) 
+    {
+    }
 
     /**
      * Add an InputConnection
@@ -126,7 +132,10 @@ public:
      */
     void inputReady(LoopyNode* node);
 
-    const cv::Mat& getOutput() const { return output; }
+    const cv::Mat& getOutput() const
+    { 
+        return output;
+    }
 
     /**
      * Set this node's processing function.
@@ -134,7 +143,8 @@ public:
      * When all InputConnections attached to this node have finished processing,
      * processFn gets called with the inputs map defined above.
      */
-    void setProcessFunction(LoopyFunction pfn) {
+    void setProcessFunction(LoopyFunction pfn)
+    {
         processFn = pfn;
     }
 };

@@ -16,7 +16,10 @@ public:
 
     void setOutput(cv::Mat img);
 
-    LoopyInputNode(std::string outputKey) : LoopyNode(outputKey) {}
+    LoopyInputNode(std::string outputKey) : LoopyNode(outputKey)
+    {
+    }
+
 };
 
 #endif

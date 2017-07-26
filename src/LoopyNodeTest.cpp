@@ -32,7 +32,8 @@ struct BasicAddBooty
     float backgroundIntensity;
     float overlayIntensity;
 
-    cv::Mat operator()(std::map<std::string, LoopyNode *> inputs) {
+    cv::Mat operator()(std::map<std::string, LoopyNode *> inputs)
+    {
 
         if (inputs.count("Overlay") == 0) {
             return inputs["Background"]->getOutput();
@@ -60,7 +61,8 @@ struct BasicAddBooty
     }
 };
 
-int main() {
+int main()
+{
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
 
     LoopyInputNode *testImage = new LoopyInputNode("TestInput");

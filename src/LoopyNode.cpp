@@ -17,7 +17,8 @@ bool LoopyNode::allInputsReady()
     return true;
 }
 
-void LoopyNode::addInput(InputConnection ic) {
+void LoopyNode::addInput(InputConnection ic)
+{
     inputConnections.push_back(ic);
     // Make this node an outputReceiver of the node at the other end of the InputConnection.
     // This is kind of ugly and I'm sure there's a more elegant way to set things up but it works.
@@ -27,7 +28,8 @@ void LoopyNode::addInput(InputConnection ic) {
     inputNameMapping[ic.inputNode->outputKey] = ic.parameterName;
 }
 
-void LoopyNode::inputReady(LoopyNode* node) {
+void LoopyNode::inputReady(LoopyNode* node)
+{
     if (inputConnections.size() == 0) {
         std::cout << "You're notifying a node without any input connections that some input is ready! Bad!" << std::endl;
         exit(1);
@@ -44,7 +46,8 @@ void LoopyNode::inputReady(LoopyNode* node) {
     }
 }
 
-void LoopyNode::notifyReceivers() {
+void LoopyNode::notifyReceivers()
+{
     outputIterations ++;
     for (size_t i = 0; i < outputReceivers.size(); ++i) {
         outputReceivers[i]->inputReady(this);
