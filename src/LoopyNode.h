@@ -11,6 +11,7 @@
 class LoopyNode;
 
 typedef std::function<cv::Mat (std::map<std::string, LoopyNode *>)> LoopyFunction;
+typedef std::map<std::string, LoopyNode *> LoopyFunctionInput;
 
 
 /**
