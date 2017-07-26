@@ -17,7 +17,6 @@ int main()
     cv::Mat image;
     image = cv::imread("frog.png", CV_LOAD_IMAGE_UNCHANGED);
 
-
     LoopyNode *scaleAndRotate = new LoopyNode("ScaleAndRotate");
 
     LinearTransformationFunction s = Scale(0.75, 0.75, image.cols/2, image.rows/2);
