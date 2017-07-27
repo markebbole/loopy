@@ -12,37 +12,59 @@ int main()
 {
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
 
-    LoopyInputNode *testImage = new LoopyInputNode("TestInput");
-
     cv::Mat image;
-    image = cv::imread("frog.png", CV_LOAD_IMAGE_UNCHANGED);
+    image = cv::imread("man-table-fish.jpg", CV_LOAD_IMAGE_UNCHANGED);
+
+    cv::Mat image2;
+    image2 = cv::imread("doggo.png", CV_LOAD_IMAGE_UNCHANGED);
+
+    cv::Mat newSrc(image.size(), CV_MAKE_TYPE(image.type(), 4));
+
+    int from_to[] = { 0,0, 1,1, 2,2, 2,3 };
+
+    cv::mixChannels(&image,1,&newSrc,1,from_to,4);
+
+    LoopyInputNode *testImage = new LoopyInputNode("TestInput");
+    LoopyInputNode *dogImage = new LoopyInputNode("Doggo");
+
+    testImage->setOutput(newSrc);
+    dogImage->setOutput(newSrc);
+
+    LoopyNode *dogSpeckles = new LoopyNode("DogSpeckles");
+    SpeckledNoise noise(0.01, true);
+    dogSpeckles->setProcessFunction(noise);
+
+
+    dogSpeckles->addInput(InputConnection(testImage, noise.imageKey, true));
+
+    // LoopyNode *addNoise = new LoopyNode("AddNoise");
+    // AdditionFunction a1(0.2);
+    // addNoise->setProcessFunction(a1);
+    // addNoise->addInput(InputConnection(dogSpeckles, a1.backgroundKey, true));
+    // addNoise->addInput(InputConnection(scaleAndRotate, a1.foregroundKey, true));
+
+    LoopyNode *addNode = new LoopyNode("Add");
+    AdditionFunction ISaidIDoNotCareAboutButtsButIDo(.1);
+    addNode->setProcessFunction(ISaidIDoNotCareAboutButtsButIDo);
+    addNode->addInput(InputConnection(dogSpeckles, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, true));
 
     LoopyNode *scaleAndRotate = new LoopyNode("ScaleAndRotate");
 
-    LinearTransformationFunction s = Scale(0.75, 0.75, image.cols/2, image.rows/2);
-    LinearTransformationFunction r = Rotate(20, image.cols/2, image.rows/2);
-    LinearTransformationFunction rs = r * s;
+    LinearTransformationFunction rs = Scale(1.05, 1.05, image.cols/2, image.rows/2);
+    //LinearTransformationFunction r = Translate(100, 5);
+    //LinearTransformationFunction rs = r*s;
     scaleAndRotate->setProcessFunction(rs);
-
-    LoopyNode *addNode = new LoopyNode("Add");
-
-    AdditionFunction ISaidIDoNotCareAboutButtsButIDo(1);
-
-    addNode->setProcessFunction(ISaidIDoNotCareAboutButtsButIDo);
-
-    scaleAndRotate->addInput(InputConnection(addNode, r.imageInput, true));
-
-    // false here means on the first iteration of the graph we don't wait for output from the scale node.
-    // Otherwise we are stuck.
+    scaleAndRotate->addInput(InputConnection(addNode, rs.imageInput, true));
     addNode->addInput(InputConnection(scaleAndRotate, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, false));
 
-    addNode->addInput(InputConnection(testImage, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, true));
 
-    testImage->setOutput(image);
+
 
     // On every key press run an iteration through the graph.
     while (true) {
         testImage->setReady();
+        dogImage->setReady();
+
         cv::imshow( "Display window", addNode->getOutput() );
         cv::waitKey(0);
     }

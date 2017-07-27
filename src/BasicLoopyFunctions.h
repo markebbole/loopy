@@ -15,6 +15,7 @@
 /**
  * Perform a linear transformation on an input with key ImageInput
  */
+
 struct LinearTransformationFunction
 {
 	cv::Mat transform_3x3;
@@ -58,23 +59,86 @@ static LinearTransformationFunction Rotate(float rotationDegrees, float centerX,
 
 	LinearTransformationFunction t1 = Translate(-centerX, -centerY);
 	LinearTransformationFunction rotationFunction(cos(theta), -sin(theta), 0,
-		                                          sin(theta),  cos(theta), 0,
+		                                           sin(theta),  cos(theta), 0,
 		                                                   0,           0, 1);
 	return t1.inverse() * rotationFunction * t1;
 }
 
-struct AdditionFunction
+struct BinaryPixelOperator
 {
-	std::string backgroundKey = "Background";
-	std::string foregroundKey = "Foreground";
+    virtual cv::Vec4b operator()(cv::Vec4b& first, cv::Vec4b& second)
+    {
+        return cv::Vec4b();
+    }
+};
 
-	float foregroundMultiplier;
+struct AddPixelOperator : public BinaryPixelOperator
+{
+    float foregroundMultiplier;
+    AddPixelOperator(float foregroundMultiplier) : BinaryPixelOperator() {
+        this->foregroundMultiplier = foregroundMultiplier;
+    }
+    virtual cv::Vec4b operator()(cv::Vec4b& first, cv::Vec4b& second)
+    {
+        if (first[3] == 0) {
+            return second;
+        } else {
+            return foregroundMultiplier * first + (1-foregroundMultiplier) * second;
+        }
+    }
+};
 
-	AdditionFunction(float foregroundMultiplier) : foregroundMultiplier(foregroundMultiplier) 
+struct AddPixelModOperator : public BinaryPixelOperator
+{
+    float foregroundMultiplier;
+    AddPixelModOperator(float foregroundMultiplier) : BinaryPixelOperator() {
+        this->foregroundMultiplier = foregroundMultiplier;
+    }
+    virtual cv::Vec4b operator()(cv::Vec4b& first, cv::Vec4b& second)
+    {
+        if (first[3] == 0) {
+            return second;
+        } else {
+            return cv::Vec4b((first[0]+second[0])%256, (first[1]+second[1])%256, (first[2]+second[2])%256, 1);
+        }
+    }
+};
+
+
+
+struct BinaryFunction
+{
+private:
+    std::string firstKey;
+    std::string secondKey;
+public:
+    BinaryPixelOperator* op;
+
+    BinaryFunction(BinaryPixelOperator* op, std::string f, std::string s) : op(op), firstKey(f), secondKey(s)
+    {
+    }
+
+    cv::Mat operator()(LoopyFunctionInput inputs);
+};
+
+
+struct AdditionFunction : public BinaryFunction
+{
+    static std::string foregroundKey;
+    static std::string backgroundKey;
+	AdditionFunction(float foregroundMultiplier) : BinaryFunction(new AddPixelModOperator(foregroundMultiplier), foregroundKey, backgroundKey) 
 	{
 	}
+};
 
-	cv::Mat operator()(LoopyFunctionInput inputs);
+struct SpeckledNoise
+{
+    std::string imageKey = "Image";
+    float speckleFrequency;
+    bool colored;
+
+    SpeckledNoise(float speckleFrequency, bool colored) : speckleFrequency(speckleFrequency), colored(colored) {}
+    cv::Mat operator()(LoopyFunctionInput inputs);
 };
  
 #endif
