@@ -2,6 +2,8 @@
 #define BASIC_LOOPY_FUNCTIONS
 
 #include "LoopyNode.h"
+
+#include <stdlib.h>
 #include "LinearTransformations.h"
 #include "BinaryPixelOperators.h"
 
@@ -54,6 +56,24 @@ struct SpeckledNoise
     bool colored;
 
     SpeckledNoise(float speckleFrequency, bool colored) : speckleFrequency(speckleFrequency), colored(colored) {}
+    cv::Mat operator()(LoopyFunctionInput inputs);
+};
+
+struct RandomWalker
+{
+    std::string imageKey = "Image";
+    std::string canvasKey = "Canvas";
+    int x,y, r,g,b;
+    bool startedWalking;
+
+    RandomWalker(int red, int green, int blue) : x(0), y(0), r(red), g(green), b(blue), startedWalking(false)
+    {
+    }
+
+    RandomWalker() : x(0), y(0), r(-1), g(-1), b(-1), startedWalking(false) 
+    {
+    }
+
     cv::Mat operator()(LoopyFunctionInput inputs);
 };
  

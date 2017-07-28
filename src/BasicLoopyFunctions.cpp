@@ -1,7 +1,5 @@
 #include "BasicLoopyFunctions.h"
 
-#include <stdlib.h>
-
 cv::Mat BinaryFunction::operator()(LoopyFunctionInput inputs)
 {
 	if (inputs.count(firstKey) == 0) {
@@ -50,3 +48,34 @@ cv::Mat SpeckledNoise::operator()(LoopyFunctionInput inputs)
 	return newImage;
 }
 
+/**
+ * 0 1 2
+ * 7   3
+ * 6 5 4
+*/
+cv::Mat RandomWalker::operator()(LoopyFunctionInput inputs)
+{
+	
+	std::string keyToUse = inputs.count(imageKey) == 0 ? canvasKey : imageKey;
+	cv::Mat image = inputs[keyToUse]->getOutput().clone();
+
+	if (!startedWalking) {
+		x = rand() % image.cols;
+		y = rand() % image.rows;
+		startedWalking = true;
+	}
+	int count = 0;
+	int total = 130;
+	while(count < total) {
+		int direction = rand() % 8;
+		if (r < 0 || g < 0 || b < 0) {
+			image.at<cv::Vec4b>(y,x) = (r < 0 || g < 0 || b < 0) ? cv::Vec4b(rand()%256, rand()%256, rand()%256, 1) : cv::Vec4b(r, g, b, 1);
+		}
+		//this is so dumb
+		x = MAX(((direction == 1 || direction == 5) ? x : (direction >= 2 && direction <= 4) ? x+1 : x-1) % image.cols, 0);
+		y = MAX(((direction == 7 || direction == 3) ? y  : (direction >= 0 && direction <= 2) ? y-1 : y+1) % image.rows, 0);
+		count++;
+	}
+
+	return image;
+}
