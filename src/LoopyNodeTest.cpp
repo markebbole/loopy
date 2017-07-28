@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "BasicLoopyFunctions.h"
+#include "LinearTransformations.h"
 
 int main()
 {
@@ -37,13 +38,13 @@ int main()
     dogSpeckles->addInput(InputConnection(testImage, noise.imageKey, true));
 
     LoopyNode *addNode = new LoopyNode();
-    AdditionFunction ISaidIDoNotCareAboutButtsButIDo(.1);
+    AdditionFunction ISaidIDoNotCareAboutButtsButIDo(1);
     addNode->setProcessFunction(ISaidIDoNotCareAboutButtsButIDo);
     addNode->addInput(InputConnection(dogSpeckles, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, true));
 
     LoopyNode *scaleAndRotate = new LoopyNode();
 
-    LinearTransformationFunction rs = Scale(1.05, 1.05, image.cols/2, image.rows/2);
+    LinearTransformationFunction rs = LinearTransformationFunction::Scale(1.01, 1.01, image.cols/2, image.rows/2);
     //LinearTransformationFunction r = Translate(100, 5);
     //LinearTransformationFunction rs = r*s;
     scaleAndRotate->setProcessFunction(rs);
