@@ -124,10 +124,12 @@ public:
 
 struct AdditionFunction : public BinaryFunction
 {
-    static std::string foregroundKey;
-    static std::string backgroundKey;
-	AdditionFunction(float foregroundMultiplier) : BinaryFunction(new AddPixelModOperator(foregroundMultiplier), foregroundKey, backgroundKey) 
+    std::string foregroundKey;
+    std::string backgroundKey;
+	AdditionFunction(float foregroundMultiplier) : BinaryFunction(new AddPixelModOperator(foregroundMultiplier), "F", "B") 
 	{
+        foregroundKey = "F";
+        backgroundKey = "B";
 	}
 };
 

@@ -34,9 +34,6 @@ LinearTransformationFunction LinearTransformationFunction::operator*(const Linea
 	return t;
 }
 
-std::string AdditionFunction::foregroundKey = "F";
-std::string AdditionFunction::backgroundKey = "B";
-
 cv::Mat BinaryFunction::operator()(LoopyFunctionInput inputs)
 {
 	if (inputs.count(firstKey) == 0) {

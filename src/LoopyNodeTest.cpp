@@ -34,7 +34,6 @@ int main()
     SpeckledNoise noise(0.01, true);
     dogSpeckles->setProcessFunction(noise);
 
-
     dogSpeckles->addInput(InputConnection(testImage, noise.imageKey, true));
 
     LoopyNode *addNode = new LoopyNode();
@@ -50,9 +49,6 @@ int main()
     scaleAndRotate->setProcessFunction(rs);
     scaleAndRotate->addInput(InputConnection(addNode, rs.imageInput, true));
     addNode->addInput(InputConnection(scaleAndRotate, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, false));
-
-
-
 
     // On every key press run an iteration through the graph.
     while (true) {
