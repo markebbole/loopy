@@ -37,12 +37,6 @@ int main()
 
     dogSpeckles->addInput(InputConnection(testImage, noise.imageKey, true));
 
-    // LoopyNode *addNoise = new LoopyNode("AddNoise");
-    // AdditionFunction a1(0.2);
-    // addNoise->setProcessFunction(a1);
-    // addNoise->addInput(InputConnection(dogSpeckles, a1.backgroundKey, true));
-    // addNoise->addInput(InputConnection(scaleAndRotate, a1.foregroundKey, true));
-
     LoopyNode *addNode = new LoopyNode();
     AdditionFunction ISaidIDoNotCareAboutButtsButIDo(.1);
     addNode->setProcessFunction(ISaidIDoNotCareAboutButtsButIDo);
