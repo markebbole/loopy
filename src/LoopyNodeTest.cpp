@@ -24,13 +24,13 @@ int main()
 
     cv::mixChannels(&image,1,&newSrc,1,from_to,4);
 
-    LoopyInputNode *testImage = new LoopyInputNode("TestInput");
-    LoopyInputNode *dogImage = new LoopyInputNode("Doggo");
+    LoopyInputNode *testImage = new LoopyInputNode();
+    LoopyInputNode *dogImage = new LoopyInputNode();
 
     testImage->setOutput(newSrc);
     dogImage->setOutput(newSrc);
 
-    LoopyNode *dogSpeckles = new LoopyNode("DogSpeckles");
+    LoopyNode *dogSpeckles = new LoopyNode();
     SpeckledNoise noise(0.01, true);
     dogSpeckles->setProcessFunction(noise);
 
@@ -43,12 +43,12 @@ int main()
     // addNoise->addInput(InputConnection(dogSpeckles, a1.backgroundKey, true));
     // addNoise->addInput(InputConnection(scaleAndRotate, a1.foregroundKey, true));
 
-    LoopyNode *addNode = new LoopyNode("Add");
+    LoopyNode *addNode = new LoopyNode();
     AdditionFunction ISaidIDoNotCareAboutButtsButIDo(.1);
     addNode->setProcessFunction(ISaidIDoNotCareAboutButtsButIDo);
     addNode->addInput(InputConnection(dogSpeckles, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, true));
 
-    LoopyNode *scaleAndRotate = new LoopyNode("ScaleAndRotate");
+    LoopyNode *scaleAndRotate = new LoopyNode();
 
     LinearTransformationFunction rs = Scale(1.05, 1.05, image.cols/2, image.rows/2);
     //LinearTransformationFunction r = Translate(100, 5);

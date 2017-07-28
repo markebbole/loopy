@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+int LoopyNode::nextId = 0;
+
 bool LoopyNode::allInputsReady()
 {
     for (size_t i = 0; i < inputConnections.size(); ++i) {

@@ -20,6 +20,10 @@ public:
     {
     }
 
+    LoopyInputNode() : LoopyInputNode(std::to_string(LoopyNode::nextId++))
+    {
+    }
+
 };
 
 #endif

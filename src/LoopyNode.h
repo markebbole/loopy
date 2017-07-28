@@ -102,6 +102,8 @@ public:
      */
     std::string outputKey;
 
+    static int nextId;
+
     /**
      * inputConnections: a vector of InputConnections to this node.
      * outputKey: this node's output key.
@@ -119,6 +121,10 @@ public:
      * Constructor with no InputConnections
      */
     LoopyNode(std::string outputKey) : LoopyNode(std::vector<InputConnection>(), outputKey) 
+    {
+    }
+
+    LoopyNode() : LoopyNode(std::vector<InputConnection>(), std::to_string(LoopyNode::nextId++))
     {
     }
 
