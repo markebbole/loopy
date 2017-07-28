@@ -4,11 +4,6 @@
 #include "LoopyNode.h"
 #include "LinearTransformations.h"
 #include "BinaryPixelOperators.h"
-#import <opencv2/opencv.hpp>
-#import <functional>
-#include <vector>
-#include <string>
-#include <map>
 
 /**
  * This file contains some basic LoopyFunctions that I feel will be useful for lots of situations.
@@ -37,7 +32,7 @@ struct AdditionFunction : public BinaryFunction
 	AdditionFunction(float foregroundMultiplier) : BinaryFunction(new AddPixelOperator(foregroundMultiplier), "F", "B") 
 	{
         foregroundKey = "F";
-        backgroundKey = "B";
+        backgroundKey = "B"; //ugh
 	}
 };
 
@@ -48,7 +43,7 @@ struct MultiplyFunction : public BinaryFunction
     MultiplyFunction() : BinaryFunction(new MultiplyPixelOperator(), "F", "B")
     {
         foregroundKey = "F";
-        backgroundKey = "B";
+        backgroundKey = "B"; //ugh
     }
 };
 
