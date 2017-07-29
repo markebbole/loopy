@@ -41,11 +41,11 @@ int main()
     cv::mixChannels(&image,1,&newSrc,1,from_to,4);
 
     // Set up functions
-    SpeckledNoise noiseFunction(0.03, true);
+    SpeckledNoise noiseFunction(0.05, true);
     AdditionFunction ISaidIDoNotCareAboutButtsButIDo(.95);
-    LinearTransformationFunction s1 = LinearTransformationFunction::Scale(1.5, .9, image.cols/2, image.rows/2);
-    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(4, 15, image.cols/2+100, image.rows/2+100);
-    SubtractionFunction mult;
+    LinearTransformationFunction s1 = LinearTransformationFunction::Scale(1.2, .9, image.cols/2, image.rows/2);
+    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(1.3, 1.5, image.cols/2+100, image.rows/2+100);
+    MultiplyFunction mult;
 
     // Add functions to nodes
     LoopyInputNode *testImage = new LoopyInputNode();
