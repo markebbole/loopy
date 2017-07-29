@@ -15,6 +15,7 @@ int main()
 
     // Load files, etc. don't worry about this too much.
     cv::Mat image;
+    image = cv::imread("man-table-fish.jpg", CV_LOAD_IMAGE_UNCHANGED);
     cv::Mat newSrc(image.size(), CV_MAKE_TYPE(image.type(), 4));
     int from_to[] = { 0,0, 1,1, 2,2, 2,3 };
     cv::mixChannels(&image,1,&newSrc,1,from_to,4);
