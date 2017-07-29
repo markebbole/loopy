@@ -13,13 +13,16 @@
 
 struct BinaryFunction
 {
-private:
+public:
     std::string firstKey;
     std::string secondKey;
-public:
     BinaryPixelOperator* op;
 
     BinaryFunction(BinaryPixelOperator* op, std::string f, std::string s) : op(op), firstKey(f), secondKey(s)
+    {
+    }
+
+    BinaryFunction(BinaryPixelOperator* op) : BinaryFunction(op, "", "")
     {
     }
 
@@ -29,34 +32,34 @@ public:
 // might be better to just make these static functions that construct a binaryfunction with the right operator?
 struct AdditionFunction : public BinaryFunction
 {
-    std::string foregroundKey;
-    std::string backgroundKey;
-	AdditionFunction(float foregroundMultiplier) : BinaryFunction(new AddPixelOperator(foregroundMultiplier), "F", "B") 
+    std::string foregroundKey = "F";
+    std::string backgroundKey = "B";
+	AdditionFunction(float foregroundMultiplier) : BinaryFunction(new AddPixelOperator(foregroundMultiplier)) 
 	{
-        foregroundKey = "F";
-        backgroundKey = "B"; //ugh
+        firstKey = foregroundKey;
+        secondKey = backgroundKey;
 	}
 };
 
 struct MultiplyFunction : public BinaryFunction
 {
-    std::string foregroundKey;
-    std::string backgroundKey;
-    MultiplyFunction() : BinaryFunction(new MultiplyPixelOperator(), "F", "B")
+    std::string foregroundKey = "F";
+    std::string backgroundKey = "B";
+    MultiplyFunction() : BinaryFunction(new MultiplyPixelOperator())
     {
-        foregroundKey = "F";
-        backgroundKey = "B"; //ugh
+        firstKey = foregroundKey;
+        secondKey = backgroundKey;
     }
 };
 
 struct SubtractionFunction : public BinaryFunction
 {
-    std::string foregroundKey;
-    std::string backgroundKey;
-    SubtractionFunction() : BinaryFunction(new SubtractPixelOperator(), "F", "B")
+    std::string foregroundKey = "F";
+    std::string backgroundKey = "B";
+    SubtractionFunction() : BinaryFunction(new SubtractPixelOperator())
     {
-        foregroundKey = "F";
-        backgroundKey = "B"; //ugh
+        firstKey = foregroundKey;
+        secondKey = backgroundKey;
     }
 };
 
