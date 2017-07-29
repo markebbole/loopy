@@ -49,6 +49,17 @@ struct MultiplyFunction : public BinaryFunction
     }
 };
 
+struct SubtractionFunction : public BinaryFunction
+{
+    std::string foregroundKey;
+    std::string backgroundKey;
+    SubtractionFunction() : BinaryFunction(new SubtractPixelOperator(), "F", "B")
+    {
+        foregroundKey = "F";
+        backgroundKey = "B"; //ugh
+    }
+};
+
 struct SpeckledNoise
 {
     std::string imageKey = "Image";

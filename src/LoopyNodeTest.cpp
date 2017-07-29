@@ -41,11 +41,11 @@ int main()
     cv::mixChannels(&image,1,&newSrc,1,from_to,4);
 
     // Set up functions
-    SpeckledNoise noiseFunction(0.0, true);
+    SpeckledNoise noiseFunction(0.03, true);
     AdditionFunction ISaidIDoNotCareAboutButtsButIDo(.95);
-    LinearTransformationFunction s1 = LinearTransformationFunction::Scale(1.3, 1.8, image.cols/2, image.rows/2);
-    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(2.2, 1.2, image.cols/2+100, image.rows/2+100);
-    MultiplyFunction mult;
+    LinearTransformationFunction s1 = LinearTransformationFunction::Scale(1.5, .9, image.cols/2, image.rows/2);
+    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(4, 15, image.cols/2+100, image.rows/2+100);
+    SubtractionFunction mult;
 
     // Add functions to nodes
     LoopyInputNode *testImage = new LoopyInputNode();
@@ -65,31 +65,31 @@ int main()
     LoopyNode *randWalker = new LoopyNode();
     
 
-    // LoopyNode *multiplyNode = new LoopyNode();
-    //     multiplyNode->setProcessFunction(mult);
+    LoopyNode *multiplyNode = new LoopyNode();
+        multiplyNode->setProcessFunction(mult);
     
-    // // Connect nodes to eachother
+    // Connect nodes to eachother
     noiseNode->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
-    // noiseNode2->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
+    noiseNode2->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
 
-    // addNode->addInput(InputConnection(noiseNode, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true));
-    // addNode->addInput(InputConnection(scaleUp, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false));
+    addNode->addInput(InputConnection(noiseNode, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true));
+    addNode->addInput(InputConnection(scaleUp, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false));
 
-    // addNode2->addInput(InputConnection(noiseNode2, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true));
-    // addNode2->addInput(InputConnection(scaleUp2, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false));
+    addNode2->addInput(InputConnection(noiseNode2, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true));
+    addNode2->addInput(InputConnection(scaleUp2, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false));
 
-    // scaleUp->addInput(InputConnection(addNode, s1.imageInput, true));
-    // scaleUp2->addInput(InputConnection(addNode2, s2.imageInput, true));
+    scaleUp->addInput(InputConnection(addNode, s1.imageInput, true));
+    scaleUp2->addInput(InputConnection(addNode2, s2.imageInput, true));
 
-    // multiplyNode->addInput(InputConnection(addNode, mult.backgroundKey, true));
-    // multiplyNode->addInput(InputConnection(addNode2, mult.foregroundKey, true));
+    multiplyNode->addInput(InputConnection(addNode, mult.backgroundKey, true));
+    multiplyNode->addInput(InputConnection(addNode2, mult.foregroundKey, true));
 
     // On every key press run an iteration through the graph.
-    setupWalker(randWalker, noiseNode);
+    //setupWalker(randWalker, noiseNode);
     while (true) {
         testImage->setReady();
 
-        cv::imshow( "Display window", randWalker->getOutput() );
+        cv::imshow( "Display window", multiplyNode->getOutput() );
         cv::waitKey(0);
     }
 }

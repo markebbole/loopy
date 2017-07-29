@@ -14,6 +14,15 @@ cv::Vec4b AddPixelOperator::operator()(cv::Vec4b& first, cv::Vec4b& second)
     }
 }
 
+cv::Vec4b SubtractPixelOperator::operator()(cv::Vec4b& first, cv::Vec4b& second)
+{
+    if (first[3] == 0) {
+        return second;
+    } else {
+        return cv::Vec4b(MIN(first[0]-second[0], 0), MIN(first[1]-second[1], 0), MIN(first[2]-second[2], 0), 1);
+    }
+}
+
 cv::Vec4b AddPixelModOperator::operator()(cv::Vec4b& first, cv::Vec4b& second)
 {
     if (first[3] == 0) {
