@@ -133,6 +133,10 @@ public:
      */
     void addInput(InputConnection ic);
 
+    void addInput(LoopyNode *node, std::string parameterName, bool enforceOnFirstRun) {
+        addInput(InputConnection(node, parameterName, enforceOnFirstRun));
+    }
+
     /**
      * Other nodes will call this function when they have finished processing
      * and they are ready to give this node their output as input.

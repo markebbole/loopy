@@ -57,25 +57,25 @@ void noisy_test()
     // the noise function's imageKey. 
     // Also, the boolean value indicates whether noiseNode should wait for the input of testImage on the FIRST iteration through the graph.
     // You might want to set this to false to break loops that would never get resolved otherwise.
-    noiseNode->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
+    noiseNode->addInput(testImage, noiseFunction.imageKey, true);
 
-    noiseNode2->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
+    noiseNode2->addInput(testImage, noiseFunction.imageKey, true);
 
-    addNode->addInput(InputConnection(noiseNode, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true));
+    addNode->addInput(noiseNode, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true);
 
     // For example, here the boolean is false because addNode is connected to scaleUp, and scaleUp is connected to addNode.
     // If you tried to run this graph with all booleans true then nothing would happen because the functions would be waiting for
     // input from eachother.
-    addNode->addInput(InputConnection(scaleUp, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false));
+    addNode->addInput(scaleUp, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false);
 
-    addNode2->addInput(InputConnection(noiseNode2, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true));
-    addNode2->addInput(InputConnection(scaleUp2, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false));
+    addNode2->addInput(noiseNode2, ISaidIDoNotCareAboutButtsButIDo.foregroundKey, true);
+    addNode2->addInput(scaleUp2, ISaidIDoNotCareAboutButtsButIDo.backgroundKey, false);
 
-    scaleUp->addInput(InputConnection(addNode, s1.imageInput, true));
-    scaleUp2->addInput(InputConnection(addNode2, s2.imageInput, true));
+    scaleUp->addInput(addNode, s1.imageInput, true);
+    scaleUp2->addInput(addNode2, s2.imageInput, true);
 
-    multiplyNode->addInput(InputConnection(addNode, mult.backgroundKey, true));
-    multiplyNode->addInput(InputConnection(addNode2, mult.foregroundKey, true));
+    multiplyNode->addInput(addNode, mult.backgroundKey, true);
+    multiplyNode->addInput(addNode2, mult.foregroundKey, true);
 
     // On every key press run an iteration through the graph.
     while (true) {
@@ -117,17 +117,17 @@ void circle_test()
     LoopyNode *scale2 = new LoopyNode();
         scale2->setProcessFunction(s2);
 
-    circleNode->addInput(InputConnection(noiseNode, circleFunction.backgroundKey, true));
+    circleNode->addInput(noiseNode, circleFunction.backgroundKey, true);
 
-    scaleNode->addInput(InputConnection(addNode, s.imageInput, true));
+    scaleNode->addInput(addNode, s.imageInput, true);
 
-    addNode->addInput(InputConnection(scaleNode, addFunction.foregroundKey, false));
-    addNode->addInput(InputConnection(circleNode, addFunction.backgroundKey, true));
-    noiseNode->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
+    addNode->addInput(scaleNode, addFunction.foregroundKey, false);
+    addNode->addInput(circleNode, addFunction.backgroundKey, true);
+    noiseNode->addInput(testImage, noiseFunction.imageKey, true);
 
-    scale2->addInput(InputConnection(subtractNode, s2.imageInput, true));
-    subtractNode->addInput(InputConnection(scale2, sub.foregroundKey, false));
-    subtractNode->addInput(InputConnection(addNode, sub.backgroundKey, true));
+    scale2->addInput(subtractNode, s2.imageInput, true);
+    subtractNode->addInput(scale2, sub.foregroundKey, false);
+    subtractNode->addInput(addNode, sub.backgroundKey, true);
 
     while (true) {
         testImage->setReady();
