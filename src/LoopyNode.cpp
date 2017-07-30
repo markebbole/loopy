@@ -42,10 +42,14 @@ void LoopyNode::inputReady(LoopyNode* node)
     // If all input nodes are ready then call this node's LoopyFunction and store the output.
     // Then notify all nodes that have this node as an InputConnection that output is ready.
     if (allInputsReady()) {
-        output = processFn(inputs);
+        output = process(inputs);
         inputs.clear();
         notifyReceivers();
     }
+}
+
+LoopyNode::~LoopyNode() {
+
 }
 
 void LoopyNode::notifyReceivers()
@@ -54,4 +58,11 @@ void LoopyNode::notifyReceivers()
     for (size_t i = 0; i < outputReceivers.size(); ++i) {
         outputReceivers[i]->inputReady(this);
     }
+}
+
+cv::Mat LoopyNode::process(LoopyFunctionInput inputs)
+{
+    std::cout << "whoa there!!! you just called the processing function of a base LoopyNode" << std::endl;
+    cv::Mat newImage = cv::Mat(0, 0, 0);
+    return newImage;
 }

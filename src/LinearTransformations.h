@@ -6,29 +6,29 @@
  * Perform a linear transformation on an input with key ImageInput
  */
 
-struct LinearTransformationFunction
+struct LinearTransformationNode : public LoopyNode
 {
     cv::Mat transform_3x3;
 
     std::string imageInput = "ImageInput";
 
-    LinearTransformationFunction(float a, float b, float c, float d, float e, float f, float g, float h, float i);
+    LinearTransformationNode(float a, float b, float c, float d, float e, float f, float g, float h, float i);
 
-    LinearTransformationFunction() : LinearTransformationFunction(0,0,0,0,0,0,0,0,0)
+    LinearTransformationNode() : LinearTransformationNode(0,0,0,0,0,0,0,0,0)
     {
     }
 
-    LinearTransformationFunction inverse();
+    LinearTransformationNode inverse();
 
-    LinearTransformationFunction operator*(const LinearTransformationFunction &a);
+    LinearTransformationNode operator*(const LinearTransformationNode &a);
 
-    cv::Mat operator()(LoopyFunctionInput inputs);
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 
-    static LinearTransformationFunction Translate(float x, float y);
+    static LinearTransformationNode Translate(float x, float y);
 
-    static LinearTransformationFunction Scale(float x, float y, float centerX, float centerY);
+    static LinearTransformationNode Scale(float x, float y, float centerX, float centerY);
 
-    static LinearTransformationFunction Rotate(float rotationDegrees, float centerX, float centerY);
+    static LinearTransformationNode Rotate(float rotationDegrees, float centerX, float centerY);
 
 };
 

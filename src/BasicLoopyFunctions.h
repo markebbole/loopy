@@ -11,22 +11,25 @@
  * This file contains some basic LoopyFunctions that I feel will be useful for lots of situations.
  */
 
-struct BinaryFunction
+struct BinaryFunction : public LoopyNode
 {
 public:
     std::string firstKey;
     std::string secondKey;
     BinaryPixelOperator* op;
 
-    BinaryFunction(BinaryPixelOperator* op, std::string f, std::string s) : op(op), firstKey(f), secondKey(s)
+    BinaryFunction(BinaryPixelOperator* op, std::string f, std::string s) : LoopyNode()
     {
+        this->firstKey = f;
+        this->secondKey = s;
+        this->op = op;
     }
 
     BinaryFunction(BinaryPixelOperator* op) : BinaryFunction(op, "", "")
     {
     }
 
-    cv::Mat operator()(LoopyFunctionInput inputs);
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 // might be better to just make these static functions that construct a binaryfunction with the right operator?
@@ -85,46 +88,52 @@ struct DivideFunction : public BinaryFunction
     }
 };
 
-struct SpeckledNoise
+struct SpeckledNoise : public LoopyNode
 {
     std::string imageKey = "Image";
     float speckleFrequency;
     bool colored;
 
-    SpeckledNoise(float speckleFrequency, bool colored) : speckleFrequency(speckleFrequency), colored(colored) {}
-    cv::Mat operator()(LoopyFunctionInput inputs);
+    SpeckledNoise(float speckleFrequency, bool colored) : LoopyNode() {
+        this->speckleFrequency = speckleFrequency;
+        this->colored = colored;
+    }
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 /**
  * Draw a white circle
  */
-struct CircleFunction
+struct CircleFunction : public LoopyNode
 {
     std::string backgroundKey = "Background";
     int x,y;
     float radius;
-    CircleFunction(int x, int y, float radius) : x(x), y(y), radius(radius)
+    CircleFunction(int x, int y, float radius) : LoopyNode()
     {
+        this->x = x;
+        this->y = y;
+        this->radius = radius;
     }
-    cv::Mat operator()(LoopyFunctionInput inputs);
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
-struct RandomWalker
-{
-    std::string imageKey = "Image";
-    std::string canvasKey = "Canvas";
-    int x,y, r,g,b;
-    bool startedWalking;
+// struct RandomWalker : public LoopyNode
+// {
+//     std::string imageKey = "Image";
+//     std::string canvasKey = "Canvas";
+//     int x,y, r,g,b;
+//     bool startedWalking;
 
-    RandomWalker(int red, int green, int blue) : x(0), y(0), r(red), g(green), b(blue), startedWalking(false)
-    {
-    }
+//     RandomWalker(int red, int green, int blue) : x(0), y(0), r(red), g(green), b(blue), startedWalking(false)
+//     {
+//     }
 
-    RandomWalker() : x(0), y(0), r(-1), g(-1), b(-1), startedWalking(false) 
-    {
-    }
+//     RandomWalker() : x(0), y(0), r(-1), g(-1), b(-1), startedWalking(false) 
+//     {
+//     }
 
-    cv::Mat operator()(LoopyFunctionInput inputs);
-};
+//     virtual cv::Mat process(LoopyFunctionInput inputs);
+// };
  
 #endif

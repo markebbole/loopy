@@ -86,12 +86,6 @@ protected:
     int outputIterations;
 
     /**
-     * processFn is called whenever
-     * a LoopyNode has received all of its inputs.
-     */
-    LoopyFunction processFn;
-
-    /**
      * Iterate through all outputReceivers and call inputReady using this node's key.
      */
     void notifyReceivers();
@@ -116,6 +110,8 @@ public:
             addInput(inputConnections[i]);
         }
     }
+
+    virtual ~LoopyNode();
 
     /**
      * Constructor with no InputConnections
@@ -153,15 +149,13 @@ public:
     }
 
     /**
-     * Set this node's processing function.
-     * A LoopyFunction is any function pointer that takes a map from parameterName strings to LoopyNode pointers.
+     * this node's processing function.
+     * takes a map from parameterName strings to LoopyNode pointers.
      * When all InputConnections attached to this node have finished processing,
-     * processFn gets called with the inputs map defined above.
+     * this gets called with the inputs map defined above.
      */
-    void setProcessFunction(LoopyFunction pfn)
-    {
-        processFn = pfn;
-    }
+
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 #endif
