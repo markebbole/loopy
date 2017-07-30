@@ -40,3 +40,12 @@ cv::Vec4b MultiplyPixelOperator::operator()(cv::Vec4b& first, cv::Vec4b& second)
         return cv::Vec4b(floor(first[0]*second[0]/255.0), floor(first[1]*second[1]/255.0), floor(first[2]*second[2]/255.0), MAX(first[3], second[3]));
     }
 }
+
+cv::Vec4b DividePixelOperator::operator()(cv::Vec4b& first, cv::Vec4b& second)
+{
+    if (first[3] == 0) {
+        return second;
+    } else {
+        return cv::Vec4b(floor(255.0 * first[0] / second[0]), floor(255.0 * first[1] / second[1]), floor(255.0 * first[2] / second[2]), MAX(first[3], second[3]));
+    }
+}

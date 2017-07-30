@@ -74,6 +74,17 @@ struct SubtractionFunction : public BinaryFunction
     }
 };
 
+struct DivideFunction : public BinaryFunction
+{
+    std::string foregroundKey = "F";
+    std::string backgroundKey = "B";
+    DivideFunction() : BinaryFunction(new DividePixelOperator())
+    {
+        firstKey = foregroundKey;
+        secondKey = backgroundKey;
+    }
+};
+
 struct SpeckledNoise
 {
     std::string imageKey = "Image";
