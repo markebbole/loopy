@@ -9,18 +9,16 @@
 #include "BasicLoopyFunctions.h"
 #include "LinearTransformations.h"
 
-int main()
+void noisy_test()
 {
-    cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
-
-    // Load files, etc. don't worry about this too much.
     cv::Mat image;
     image = cv::imread("man-table-fish.jpg", CV_LOAD_IMAGE_UNCHANGED);
     cv::Mat newSrc(image.size(), CV_MAKE_TYPE(image.type(), 4));
     int from_to[] = { 0,0, 1,1, 2,2, 2,3 };
     cv::mixChannels(&image,1,&newSrc,1,from_to,4);
 
-    // Set up functions
+
+    //Set up functions
 
     // This is a function that just generates a randomly colored pixel with probability 0.05 on every pixel.
     SpeckledNoise noiseFunction(0.05, true);
@@ -30,7 +28,7 @@ int main()
 
     //These functions scale an input in the x and y direction as specified, with a center
     LinearTransformationFunction s1 = LinearTransformationFunction::Scale(1.2, .9, image.cols/2, image.rows/2);
-    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(1.3, 1.5, image.cols/2+100, image.rows/2+100);
+    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(3, 3, image.cols/2+100, image.rows/2+100);
 
     // Multiply two inputs together componentwise (so two input pixels with color (100, 50, 50) and (2, 1, 1) would result in a pixel with color (200, 50, 50))
     MultiplyFunction mult;
@@ -86,4 +84,64 @@ int main()
         cv::imshow( "Display window", multiplyNode->getOutput() );
         cv::waitKey(0);
     }
+}
+
+void circle_test()
+{
+    // Load files, etc. don't worry about this too much.
+    cv::Mat image;
+    image = cv::imread("phone_screen_360x640.png", CV_LOAD_IMAGE_UNCHANGED);
+
+    CircleFunction circleFunction(image.cols/2, image.rows/2, 20);
+    AdditionFunction addFunction(.8);
+    LinearTransformationFunction s = LinearTransformationFunction::Scale(1.1, 1.1, image.cols/2, image.rows/2);
+    LinearTransformationFunction s2 = LinearTransformationFunction::Scale(1.5, 1.5, image.cols/2+50, image.rows/2);
+    AdditionModFunction sub;
+    AdditionModFunction sub2;
+    SpeckledNoise noiseFunction(0.001, false);
+
+
+    LoopyInputNode *testImage = new LoopyInputNode();
+        testImage->setOutput(image);
+    LoopyNode *circleNode = new LoopyNode();
+        circleNode->setProcessFunction(circleFunction);
+    LoopyNode *scaleNode = new LoopyNode();
+        scaleNode->setProcessFunction(s);
+    LoopyNode *addNode = new LoopyNode();
+        addNode->setProcessFunction(addFunction);
+    LoopyNode *noiseNode = new LoopyNode();
+        noiseNode->setProcessFunction(noiseFunction);
+
+    LoopyNode *subtractNode = new LoopyNode();
+        subtractNode->setProcessFunction(sub);
+    LoopyNode *scale2 = new LoopyNode();
+        scale2->setProcessFunction(s2);
+
+    circleNode->addInput(InputConnection(noiseNode, circleFunction.backgroundKey, true));
+
+    scaleNode->addInput(InputConnection(addNode, s.imageInput, true));
+
+    addNode->addInput(InputConnection(scaleNode, addFunction.foregroundKey, false));
+    addNode->addInput(InputConnection(circleNode, addFunction.backgroundKey, true));
+    noiseNode->addInput(InputConnection(testImage, noiseFunction.imageKey, true));
+
+    scale2->addInput(InputConnection(subtractNode, s2.imageInput, true));
+    subtractNode->addInput(InputConnection(scale2, sub.foregroundKey, false));
+    subtractNode->addInput(InputConnection(addNode, sub.backgroundKey, true));
+
+    while (true) {
+        testImage->setReady();
+
+        cv::imshow( "Display window", subtractNode->getOutput() );
+        cv::waitKey(0);
+    }
+}
+
+int main()
+{
+    cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
+
+    // Load files, etc. don't worry about this too much.
+    circle_test();
+
 }

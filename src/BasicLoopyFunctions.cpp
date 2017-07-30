@@ -39,10 +39,31 @@ cv::Mat SpeckledNoise::operator()(LoopyFunctionInput inputs)
 	    	float diceroll = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 	    	bool isNoise = diceroll < speckleFrequency;
 	    	int roll1 = rand()%256;
-	    	newImage.at<cv::Vec4b>(r,c) = isNoise ? (colored ? cv::Vec4b(rand()%256, rand()%256, rand()%256, 1) :
-	    		                                                cv::Vec4b(roll1, roll1, roll1))
-	    		                                   : cv::Vec4b(0,0,0);
+	    	newImage.at<cv::Vec4b>(r,c) = isNoise ? (colored ? cv::Vec4b(rand()%256, rand()%256, rand()%256, 255) :
+	    		                                               cv::Vec4b(roll1, roll1, roll1))
+	    	                                      : cv::Vec4b(0,0,0);
 	    }
+	}
+
+	return newImage;
+};
+
+cv::Mat CircleFunction::operator()(LoopyFunctionInput inputs)
+{
+	const cv::Mat& background = inputs[backgroundKey]->getOutput();
+	const int numCircleIterations = 300;
+	cv::Mat newImage = background.clone();
+	double angleChange = 2.0 * CV_PI / numCircleIterations;
+	double angle = 0;
+	for (int i = 0; i < numCircleIterations; ++i)
+	{
+		int x_ = std::floor(x + radius * cos(angle));
+		int y_ = std::floor(y + radius * sin(angle));
+
+		x_ = MIN(MAX(x_, 0), background.cols-1);
+		y_ = MIN(MAX(y_, 0), background.rows-1);
+		newImage.at<cv::Vec4b>(y_, x_) = cv::Vec4b(255, 255, 255, 255);
+		angle += angleChange;
 	}
 
 	return newImage;

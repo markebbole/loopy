@@ -41,6 +41,17 @@ struct AdditionFunction : public BinaryFunction
 	}
 };
 
+struct AdditionModFunction : public BinaryFunction
+{
+    std::string foregroundKey = "F";
+    std::string backgroundKey = "B";
+    AdditionModFunction() : BinaryFunction(new AddPixelModOperator())
+    {
+        firstKey = foregroundKey;
+        secondKey = backgroundKey;
+    }
+};
+
 struct MultiplyFunction : public BinaryFunction
 {
     std::string foregroundKey = "F";
@@ -70,6 +81,20 @@ struct SpeckledNoise
     bool colored;
 
     SpeckledNoise(float speckleFrequency, bool colored) : speckleFrequency(speckleFrequency), colored(colored) {}
+    cv::Mat operator()(LoopyFunctionInput inputs);
+};
+
+/**
+ * Draw a white circle
+ */
+struct CircleFunction
+{
+    std::string backgroundKey = "Background";
+    int x,y;
+    float radius;
+    CircleFunction(int x, int y, float radius) : x(x), y(y), radius(radius)
+    {
+    }
     cv::Mat operator()(LoopyFunctionInput inputs);
 };
 
