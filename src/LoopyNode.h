@@ -133,6 +133,10 @@ public:
      */
     void addInput(InputConnection ic);
 
+    /**
+     * add a new node as input with a parameter name and a boolean representing whether
+     * this node should wait for the input node's output before running the first iteration
+     */
     void addInput(LoopyNode *node, std::string parameterName, bool enforceOnFirstRun) {
         addInput(InputConnection(node, parameterName, enforceOnFirstRun));
     }
