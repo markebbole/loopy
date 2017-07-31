@@ -86,62 +86,68 @@
 //     }
 // }
 
-// void circle_test()
-// {
-//     // Load files, etc. don't worry about this too much.
-//     cv::Mat image;
-//     image = cv::imread("phone_screen_360x640.png", CV_LOAD_IMAGE_UNCHANGED);
+void circle_test()
+{
+    // Load files, etc. don't worry about this too much.
+    cv::Mat image;
+    image = cv::imread("phone_screen_360x640.png", CV_LOAD_IMAGE_UNCHANGED);
 
-//     CircleFunction circleFunction(image.cols/2, image.rows/2, 20);
-//     AdditionFunction addFunction(.8);
-//     LinearTransformationFunction s = LinearTransformationFunction::Scale(1.1, 1.1, image.cols/2, image.rows/2);
-//     LinearTransformationFunction s2 = LinearTransformationFunction::Scale(1.5, 1.5, image.cols/2+50, image.rows/2);
-//     AdditionModFunction sub;
-//     AdditionModFunction sub2;
-//     SpeckledNoise noiseFunction(0.001, false);
+    // CircleFunction circleFunction(image.cols/2, image.rows/2, 20);
+    // AdditionFunction addFunction(.8);
+    // LinearTransformationFunction s = LinearTransformationFunction::Scale(1.1, 1.1, image.cols/2, image.rows/2);
+    // LinearTransformationFunction s2 = LinearTransformationFunction::Scale(1.5, 1.5, image.cols/2+50, image.rows/2);
+    // AdditionModFunction sub;
+    // AdditionModFunction sub2;
+    // SpeckledNoise noiseFunction(0.001, false);
 
 
-//     LoopyInputNode *testImage = new LoopyInputNode();
-//         testImage->setOutput(image);
-//     LoopyNode *circleNode = new LoopyNode();
-//         circleNode->setProcessFunction(circleFunction);
-//     LoopyNode *scaleNode = new LoopyNode();
-//         scaleNode->setProcessFunction(s);
-//     LoopyNode *addNode = new LoopyNode();
-//         addNode->setProcessFunction(addFunction);
-//     LoopyNode *noiseNode = new LoopyNode();
-//         noiseNode->setProcessFunction(noiseFunction);
+    LoopyInputNode *testImage = new LoopyInputNode();
+        testImage->setOutput(image);
+    CircleFunction *circleNode = new CircleFunction(image.cols/2, image.rows/2, 20);
+    LinearTransformationNode *scaleNode = LinearTransformationNode::Scale(1.1, 1.1, image.cols/2, image.rows/2);
+    AdditionFunction *addNode = new AdditionFunction(0.8);
+    SpeckledNoise *noiseNode = new SpeckledNoise(0.001, false);
+    AdditionModFunction *subtractNode = new AdditionModFunction();
+    LinearTransformationNode *scale2 = LinearTransformationNode::Scale(1.5, 1.5, image.cols/2+50, image.rows/2);
 
-//     LoopyNode *subtractNode = new LoopyNode();
-//         subtractNode->setProcessFunction(sub);
-//     LoopyNode *scale2 = new LoopyNode();
-//         scale2->setProcessFunction(s2);
+    //     circleNode->setProcessFunction(circleFunction);
+    // LoopyNode *scaleNode = new LoopyNode();
+    //     scaleNode->setProcessFunction(s);
+    // LoopyNode *addNode = new LoopyNode();
+    //     addNode->setProcessFunction(addFunction);
+    // LoopyNode *noiseNode = new LoopyNode();
+    //     noiseNode->setProcessFunction(noiseFunction);
 
-//     circleNode->addInput(noiseNode, circleFunction.backgroundKey, true);
+    // LoopyNode *subtractNode = new LoopyNode();
+    //     subtractNode->setProcessFunction(sub);
+    // LoopyNode *scale2 = new LoopyNode();
+    //     scale2->setProcessFunction(s2);
 
-//     scaleNode->addInput(addNode, s.imageInput, true);
+    circleNode->addInput(noiseNode, circleNode->backgroundKey, true);
 
-//     addNode->addInput(scaleNode, addFunction.foregroundKey, false);
-//     addNode->addInput(circleNode, addFunction.backgroundKey, true);
-//     noiseNode->addInput(testImage, noiseFunction.imageKey, true);
+    scaleNode->addInput(addNode, scaleNode->imageInput, true);
 
-//     scale2->addInput(subtractNode, s2.imageInput, true);
-//     subtractNode->addInput(scale2, sub.foregroundKey, false);
-//     subtractNode->addInput(addNode, sub.backgroundKey, true);
+    addNode->addInput(scaleNode, addNode->foregroundKey, false);
+    addNode->addInput(circleNode, addNode->backgroundKey, true);
+    noiseNode->addInput(testImage, noiseNode->imageKey, true);
 
-//     while (true) {
-//         testImage->setReady();
+    scale2->addInput(subtractNode, scale2->imageInput, true);
+    subtractNode->addInput(scale2, subtractNode->foregroundKey, false);
+    subtractNode->addInput(addNode, subtractNode->backgroundKey, true);
 
-//         cv::imshow( "Display window", subtractNode->getOutput() );
-//         cv::waitKey(0);
-//     }
-// }
+    while (true) {
+        testImage->setReady();
+
+        cv::imshow( "Display window", subtractNode->getOutput() );
+        cv::waitKey(0);
+    }
+}
 
 int main()
 {
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
 
     // Load files, etc. don't worry about this too much.
-    //circle_test();
+    circle_test();
 
 }

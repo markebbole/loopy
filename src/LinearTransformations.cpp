@@ -1,31 +1,52 @@
 #include "LinearTransformations.h"
 
-LinearTransformationNode LinearTransformationNode::Translate(float x, float y)
+static cv::Mat Make3x3Matrix(float a, float b, float c, float d, float e, float f, float g, float h, float i)
 {
-    LinearTransformationNode translateFunction(1, 0, x,
-                                                   0, 1, y,
-                                                   0, 0, 1);
-    return translateFunction;
+  float data[9] = {a, b, c,
+   d, e, f,
+   g, h, i};
+
+   return cv::Mat(3, 3, CV_32F, data).clone();
+ }
+
+ static cv::Mat Make3x3TranslationMatrix(float x, float y)
+ {
+  return Make3x3Matrix(1, 0, x, 0, 1, y, 0, 0, 1);
 }
 
-LinearTransformationNode LinearTransformationNode::Scale(float x, float y, float centerX, float centerY)
+static cv::Mat Make3x3ScalingMatrix(float x, float y)
 {
-    LinearTransformationNode t1 = Translate(-centerX, -centerY);
-    LinearTransformationNode scaleFunction(x, 0, 0,
-                                               0, y, 0,
-                                               0, 0, 1);
-    return t1.inverse() * scaleFunction * t1;
+  return Make3x3Matrix(x, 0, 0, 0, y, 0, 0, 0, 1);
 }
 
-LinearTransformationNode LinearTransformationNode::Rotate(float rotationDegrees, float centerX, float centerY)
+static cv::Mat Make3x3RotationMatrix(float theta)
 {
-    float theta = rotationDegrees * (CV_PI / 180);
+  return Make3x3Matrix(cos(theta), -sin(theta), 0, sin(theta), cos(theta), 0, 0, 0, 1);
+}
 
-    LinearTransformationNode t1 = Translate(-centerX, -centerY);
-    LinearTransformationNode rotationFunction(cos(theta), -sin(theta), 0,
-                                                   sin(theta),  cos(theta), 0,
-                                                           0,           0, 1);
-    return t1.inverse() * rotationFunction * t1;
+LinearTransformationNode* LinearTransformationNode::Translate(float x, float y)
+{
+  LinearTransformationNode* translateFunction = new LinearTransformationNode(Make3x3TranslationMatrix(x, y));
+  return translateFunction;
+}
+
+LinearTransformationNode* LinearTransformationNode::Scale(float x, float y, float centerX, float centerY)
+{
+  cv::Mat t1 = Make3x3TranslationMatrix(-centerX, -centerY);
+  cv::Mat scaleMatrix = t1.inv() * Make3x3ScalingMatrix(x, y) * t1;
+  LinearTransformationNode *scale = new LinearTransformationNode(scaleMatrix);
+  return scale;
+}
+
+LinearTransformationNode* LinearTransformationNode::Rotate(float rotationDegrees, float centerX, float centerY)
+{
+  float theta = rotationDegrees * (CV_PI / 180);
+
+  cv::Mat t1 = Make3x3TranslationMatrix(-centerX, -centerY);
+  cv::Mat mult = t1.inv() * Make3x3RotationMatrix(theta) * t1;
+
+  LinearTransformationNode *rotation = new LinearTransformationNode(mult);
+  return rotation;
 }
 
 cv::Mat LinearTransformationNode::process(LoopyFunctionInput inputs)
@@ -33,29 +54,11 @@ cv::Mat LinearTransformationNode::process(LoopyFunctionInput inputs)
   const cv::Mat& input = inputs[imageInput]->getOutput();
 
   cv::Mat output;
-    cv::warpPerspective(input, output, transform_3x3, cv::Size(input.cols, input.rows));
-    return output;
+  cv::warpPerspective(input, output, transform_3x3, cv::Size(input.cols, input.rows));
+  return output;
 }
 
-LinearTransformationNode::LinearTransformationNode(float a, float b, float c, float d, float e, float f, float g, float h, float i)
+LinearTransformationNode::LinearTransformationNode(cv::Mat transformationMatrix)
 {
-  float data[9] = {a, b, c,
-                 d, e, f,
-                 g, h, i};
-
-  transform_3x3 = cv::Mat(3, 3, CV_32F, data).clone();
-}
-
-LinearTransformationNode LinearTransformationNode::inverse()
-{
-  LinearTransformationNode t;
-  t.transform_3x3 = this->transform_3x3.inv();
-  return t;
-}
-
-LinearTransformationNode LinearTransformationNode::operator*(const LinearTransformationNode &a)
-{
-  LinearTransformationNode t;
-  t.transform_3x3 = transform_3x3 * a.transform_3x3;
-  return t;
+  transform_3x3 = transformationMatrix;
 }
