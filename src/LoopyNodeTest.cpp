@@ -8,6 +8,7 @@
 
 #include "BasicLoopyNodes.h"
 #include "LinearTransformations.h"
+#include "MathNodes.h"
 
 void noisy_test()
 {
