@@ -33,6 +33,7 @@ public:
 };
 
 // might be better to just make these static Nodes that construct a binaryNode with the right operator?
+// also, wow I want to eventually do something better than arbitrary strings for keys.
 struct AdditionNode : public BinaryNode
 {
     std::string foregroundKey = "F";
