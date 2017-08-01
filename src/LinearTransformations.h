@@ -1,7 +1,7 @@
 #ifndef LINEAR_TRANSFORMATIONS
 #define LINEAR_TRANSFORMATIONS
 
-#include "BasicLoopyFunctions.h"
+#include "BasicLoopyNodes.h"
 
 /**
  * Perform a linear transformation on an input with key ImageInput

@@ -6,7 +6,7 @@
 
 #include <vector>
 
-#include "BasicLoopyFunctions.h"
+#include "BasicLoopyNodes.h"
 #include "LinearTransformations.h"
 
 void noisy_test()
@@ -21,19 +21,19 @@ void noisy_test()
     //Set up functions
 
     // This is a function that just generates a randomly colored pixel with probability 0.05 on every pixel.
-    SpeckledNoise *noiseNode = new SpeckledNoise(0.05, true);
-    SpeckledNoise *noiseNode2 = new SpeckledNoise(0.05, true);
+    SpeckledNoiseNode *noiseNode = new SpeckledNoiseNode(0.05, true);
+    SpeckledNoiseNode *noiseNode2 = new SpeckledNoiseNode(0.05, true);
 
     // This is a function that adds two inputs together.
-    AdditionFunction *addNode = new AdditionFunction(.95);
-    AdditionFunction *addNode2 = new AdditionFunction(.95);
+    AdditionNode *addNode = new AdditionNode(.95);
+    AdditionNode *addNode2 = new AdditionNode(.95);
 
     //These functions scale an input in the x and y direction as specified, with a center
     LinearTransformationNode *scaleUp = LinearTransformationNode::Scale(1.2, .9, image.cols/2, image.rows/2);
     LinearTransformationNode *scaleUp2 = LinearTransformationNode::Scale(3, 3, image.cols/2+100, image.rows/2+100);
 
     // Multiply two inputs together componentwise (so two input pixels with color (100, 50, 50) and (2, 1, 1) would result in a pixel with color (200, 50, 50))
-    MultiplyFunction *multiplyNode = new MultiplyFunction();
+    MultiplyNode *multiplyNode = new MultiplyNode();
 
     // Add functions to nodes. Just make some new nodes and then set their functions to the above ones.
     LoopyInputNode *testImage = new LoopyInputNode();
@@ -82,11 +82,11 @@ void circle_test()
 
     LoopyInputNode *testImage = new LoopyInputNode();
         testImage->setOutput(image);
-    CircleFunction *circleNode = new CircleFunction(image.cols/2, image.rows/2, 20);
+    CircleNode *circleNode = new CircleNode(image.cols/2, image.rows/2, 20);
     LinearTransformationNode *scaleNode = LinearTransformationNode::Scale(1.1, 1.1, image.cols/2, image.rows/2);
-    AdditionFunction *addNode = new AdditionFunction(0.8);
-    SpeckledNoise *noiseNode = new SpeckledNoise(0.001, false);
-    AdditionModFunction *addModNode = new AdditionModFunction();
+    AdditionNode *addNode = new AdditionNode(0.8);
+    SpeckledNoiseNode *noiseNode = new SpeckledNoiseNode(0.001, false);
+    AdditionModNode *addModNode = new AdditionModNode();
     LinearTransformationNode *scale2 = LinearTransformationNode::Scale(1.5, 1.5, image.cols/2+50, image.rows/2);
 
     circleNode->addInput(noiseNode, circleNode->backgroundKey, true);
