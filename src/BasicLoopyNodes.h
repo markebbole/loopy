@@ -37,11 +37,11 @@ struct AdditionNode : public BinaryNode
 {
     std::string foregroundKey = "F";
     std::string backgroundKey = "B";
-	AdditionNode(float foregroundMultiplier) : BinaryNode(new AddPixelOperator(foregroundMultiplier))
-	{
+    AdditionNode(float foregroundMultiplier) : BinaryNode(new AddPixelOperator(foregroundMultiplier))
+    {
         firstKey = foregroundKey;
         secondKey = backgroundKey;
-	}
+    }
 };
 
 struct AdditionModNode : public BinaryNode
@@ -117,5 +117,5 @@ struct CircleNode : public LoopyNode
     }
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
- 
+
 #endif
