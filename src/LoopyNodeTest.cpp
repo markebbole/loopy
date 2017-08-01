@@ -114,7 +114,6 @@ int main()
 {
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
 
-    // Load files, etc. don't worry about this too much.
     //circle_test();
     noisy_test();
 
