@@ -96,6 +96,9 @@ public:
      */
     std::string outputKey;
 
+    /**
+     * This generates keys automatically for LoopyNodes
+     */
     static int nextId;
 
     /**

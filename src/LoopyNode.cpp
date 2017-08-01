@@ -49,7 +49,6 @@ void LoopyNode::inputReady(LoopyNode* node)
 }
 
 LoopyNode::~LoopyNode() {
-
 }
 
 void LoopyNode::notifyReceivers()
