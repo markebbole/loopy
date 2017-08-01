@@ -48,6 +48,28 @@ cv::Mat SpeckledNoiseNode::process(LoopyFunctionInput inputs)
 	return newImage;
 };
 
+cv::Mat SineNode::process(LoopyFunctionInput inputs)
+{
+	const cv::Mat& image = inputs[imageKey]->getOutput();
+	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
+
+	int pixelCounter = 0;
+	int norm = image.rows * image.cols;
+	for (int r = 0; r < image.rows; ++r) {
+	    for(int c = 0; c < image.cols; ++c) {
+	    	float s = (1 + sin(updateWave + frequency*pixelCounter)) / 2;
+	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(180, 100, 150 + 70 * sqrt(s), 255);
+	    }
+	    pixelCounter++;
+	    
+
+	}
+	updateWave += waveDiff;
+
+	
+	return newImage;
+}
+
 cv::Mat CircleNode::process(LoopyFunctionInput inputs)
 {
 	const cv::Mat& background = inputs[backgroundKey]->getOutput();

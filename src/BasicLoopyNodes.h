@@ -31,16 +31,33 @@ public:
 
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
-
+ 
 struct SpeckledNoiseNode : public LoopyNode
 {
     std::string imageKey = "Image";
     float speckleFrequency;
     bool colored;
 
-    SpeckledNoiseNode(float speckleFrequency, bool colored) : LoopyNode() {
+    SpeckledNoiseNode(float speckleFrequency, bool colored) : LoopyNode()
+    {
         this->speckleFrequency = speckleFrequency;
         this->colored = colored;
+    }
+    virtual cv::Mat process(LoopyFunctionInput inputs);
+};
+
+struct SineNode : public LoopyNode
+{
+private:
+    float waveDiff;
+    float frequency;
+    float updateWave;
+public:
+    std::string imageKey = "Image";
+    SineNode(float frequency, float waveDiff) : LoopyNode() {
+        this->frequency = frequency;
+        this->waveDiff = waveDiff;
+        updateWave = 0;
     }
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };

@@ -15,10 +15,6 @@ struct LinearTransformationNode : public LoopyNode
 
     LinearTransformationNode(cv::Mat transformationMatrix);
 
-    LinearTransformationNode inverse();
-
-    LinearTransformationNode operator*(const LinearTransformationNode &a);
-
     virtual cv::Mat process(LoopyFunctionInput inputs);
 
     static LinearTransformationNode* Translate(float x, float y);

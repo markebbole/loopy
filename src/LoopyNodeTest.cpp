@@ -111,11 +111,41 @@ void circle_test()
     }
 }
 
+void sinusoid_test()
+{
+    cv::Mat image;
+    image = cv::imread("phone_screen_360x640.png", CV_LOAD_IMAGE_UNCHANGED);
+    LoopyInputNode *testImage = new LoopyInputNode();
+        testImage->setOutput(image);
+
+    SineNode *sine = new SineNode(0.01, .7);
+    LinearTransformationNode *scale = LinearTransformationNode::Scale(1.01, .99, image.cols/2, image.rows/2);
+    LinearTransformationNode* rotate = LinearTransformationNode::Rotate(1, image.cols/2, image.rows/2);
+
+    AdditionNode *multiply = new AdditionNode(.99);
+
+
+    sine->addInput(testImage, sine->imageKey, true);
+    scale->addInput(multiply, scale->imageInput, true);
+    rotate->addInput(scale, rotate->imageInput, true);
+
+    multiply->addInput(rotate, multiply->foregroundKey, false);
+    multiply->addInput(sine, multiply->backgroundKey, true);
+
+    while (true) {
+        testImage->setReady();
+        cv::imshow( "Display window", scale->getOutput() );
+        cv::waitKey(0);
+    }
+
+}
+
 int main()
 {
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
 
     //circle_test();
-    noisy_test();
+    //noisy_test();
+    sinusoid_test();
 
 }
