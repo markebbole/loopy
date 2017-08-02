@@ -58,7 +58,7 @@ cv::Mat SineNode::process(LoopyFunctionInput inputs)
 	for (int r = 0; r < image.rows; ++r) {
 	    for(int c = 0; c < image.cols; ++c) {
 	    	float s = (1 + sin(updateWave + frequency*pixelCounter)) / 2;
-	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(180, 100, 150 + 70 * sqrt(s), 255);
+	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(100 + s * 150, 40, 100 + 70 * sqrt(s), 255);
 	    }
 	    pixelCounter++;
 	    

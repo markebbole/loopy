@@ -114,7 +114,7 @@ void circle_test()
 void sinusoid_test()
 {
     cv::Mat image;
-    image = cv::imread("phone_screen_360x640.png", CV_LOAD_IMAGE_UNCHANGED);
+    image = cv::imread("phone_screen_360x450.png", CV_LOAD_IMAGE_UNCHANGED);
     LoopyInputNode *testImage = new LoopyInputNode();
         testImage->setOutput(image);
 
@@ -122,7 +122,7 @@ void sinusoid_test()
     LinearTransformationNode *scale = LinearTransformationNode::Scale(1.01, .99, image.cols/2, image.rows/2);
     LinearTransformationNode* rotate = LinearTransformationNode::Rotate(1, image.cols/2, image.rows/2);
 
-    AdditionNode *multiply = new AdditionNode(.99);
+    AdditionNode *multiply = new AdditionNode(.9999);
 
 
     sine->addInput(testImage, sine->imageKey, true);
@@ -134,7 +134,7 @@ void sinusoid_test()
 
     while (true) {
         testImage->setReady();
-        cv::imshow( "Display window", scale->getOutput() );
+        cv::imshow( "Display window", multiply->getOutput() );
         cv::waitKey(0);
     }
 
