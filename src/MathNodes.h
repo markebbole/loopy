@@ -14,6 +14,10 @@ struct AdditionNode : public BinaryNode
         firstKey = foregroundKey;
         secondKey = backgroundKey;
     }
+
+    AdditionNode() : AdditionNode(1)
+    {
+    }
 };
 
 struct AdditionModNode : public BinaryNode
