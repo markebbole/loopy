@@ -1,0 +1,38 @@
+
+{
+    "testImage" : {
+        type: "ImageInputNode",
+        file: "phone_screen_360x450",
+    },
+
+    "sine1" : {
+        type: "SineNode",
+        frequency: 0.01,
+        waveDiff: 0.7,
+        imageKey: "testImage",
+    },
+
+    "scale" : {
+        type: "ScaleNode",
+        x: 1.01,
+        y: 0.99,
+        centerX: 0.5,
+        centerY: 0.5,
+        imageInput: "add",
+    },
+
+    "rotate" : {
+        type: "RotateNode",
+        degree: 1,
+        centerX: 0.5,
+        centerY: 0.5,
+        imageInput: "scale",
+    },
+
+    "add" : {
+        type: "AdditionNode",
+        foregroundMultiplier: 0.9999
+        foregroundKey: "rotate",
+        backgroundKey: "sine",
+    },
+}
