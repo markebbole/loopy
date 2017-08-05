@@ -9,5 +9,5 @@ RotateNode
 SpeckledNoiseNode
 SineNode
 CircleNode
-ClearImageNode
-ImageNode
+ClearImageNode_
+ImageNode_
