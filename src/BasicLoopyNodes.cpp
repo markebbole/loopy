@@ -34,6 +34,8 @@ cv::Mat SpeckledNoiseNode::process(LoopyFunctionInput inputs)
 {
 	const cv::Mat& image = inputs[imageKey]->getOutput();
 	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
+	float speckleFrequency = functionInputs["speckleFrequency"];
+	bool colored = functionInputs["colored"];
 	for (int r = 0; r < image.rows; ++r) {
 	    for(int c = 0; c < image.cols; ++c) {
 	    	float diceroll = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -53,18 +55,25 @@ cv::Mat SineNode::process(LoopyFunctionInput inputs)
 	const cv::Mat& image = inputs[imageKey]->getOutput();
 	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
 
+	float waveDiff = functionInputs["waveDiff"];
+    float frequency = functionInputs["frequency"];
+    float updateWave = functionInputs["updateWave"];
+    float red = functionInputs["red"];
+    float green = functionInputs["green"];
+    float blue = functionInputs["blue"];
+
 	int pixelCounter = 0;
 	int norm = image.rows * image.cols;
 	for (int r = 0; r < image.rows; ++r) {
 	    for(int c = 0; c < image.cols; ++c) {
 	    	float s = (1 + sin(updateWave + frequency*pixelCounter)) / 2;
-	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(100 + s * 150, 40, 100 + 70 * sqrt(s), 255);
+	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(blue + s * 150, green, red + 70 * sqrt(s), 255);
 	    }
 	    pixelCounter++;
 	    
 
 	}
-	updateWave += waveDiff;
+	functionInputs["updateWave"] = updateWave + waveDiff;
 
 	
 	return newImage;
@@ -77,6 +86,10 @@ cv::Mat CircleNode::process(LoopyFunctionInput inputs)
 	cv::Mat newImage = background.clone();
 	double angleChange = 2.0 * CV_PI / numCircleIterations;
 	double angle = 0;
+	int x = functionInputs["x"];
+	int y = functionInputs["y"];
+    float radius = functionInputs["radius"];
+
 	for (int i = 0; i < numCircleIterations; ++i)
 	{
 		int x_ = std::floor(x + radius * cos(angle));

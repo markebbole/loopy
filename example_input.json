@@ -1,0 +1,78 @@
+{
+    "in" : {
+        "type" : "ClearImageNode",
+        "params" : {
+            "width" : 360,
+            "height" : 540
+        }
+    },
+
+    "circ" : {
+        "type" : "CircleNode",
+        "params" : {
+            "x" : 180,
+            "y" : 270,
+            "radius" : 100
+        },
+        "backgroundKey" : "in"
+    },
+
+    "scale_circ" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 0.97,
+            "y" : 0.97,
+            "centerX" : 180,
+            "centerY" : 270
+        },
+        "imageInput" : "circle_boy"
+    },
+
+    "circle_boy" : {
+        "type" : "AdditionNode",
+        "backgroundKey" : "-scale_circ",
+        "foregroundKey" : "circ"
+    },
+
+
+
+
+    "circle_boy_scale" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 1.2,
+            "y" : 1.2,
+            "centerX" : 180,
+            "centerY" : 270
+        },
+        "imageInput" : "circle_boy_repeat"
+    },
+
+    "circle_boy_repeat" : {
+        "type" : "AdditionNode",
+        "backgroundKey" : "circle_boy",
+        "foregroundKey" : "-circle_boy_scale"
+    },
+
+
+    "heyo" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 1.5,
+            "y" : 1.8,
+            "centerX" : 180,
+            "centerY" : 270
+        },
+        "imageInput" : "circle_boy_repeat"
+    },
+
+    "heyo2" : {
+        "type" : "AdditionNode",
+        "backgroundKey" : "circle_boy_scale",
+        "foregroundKey" : "heyo"
+    },
+
+
+
+    "output" : "circle_boy_repeat"
+}

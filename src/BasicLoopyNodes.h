@@ -25,7 +25,7 @@ public:
         this->op = op;
     }
 
-    BinaryNode(BinaryPixelOperator* op) : BinaryNode(op, "", "")
+    BinaryNode(BinaryPixelOperator* op) : BinaryNode(op, "0", "1")
     {
     }
 
@@ -34,31 +34,26 @@ public:
  
 struct SpeckledNoiseNode : public LoopyNode
 {
-    std::string imageKey = "Image";
-    float speckleFrequency;
-    bool colored;
+    std::string imageKey = "imageKey";
 
-    SpeckledNoiseNode(float speckleFrequency, bool colored) : LoopyNode()
+    SpeckledNoiseNode() : LoopyNode()
     {
-        this->speckleFrequency = speckleFrequency;
-        this->colored = colored;
     }
+
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 struct SineNode : public LoopyNode
 {
-private:
-    float waveDiff;
-    float frequency;
-    float updateWave;
-public:
-    std::string imageKey = "Image";
-    SineNode(float frequency, float waveDiff) : LoopyNode() {
-        this->frequency = frequency;
-        this->waveDiff = waveDiff;
-        updateWave = 0;
+    std::string imageKey = "imageKey";
+    SineNode() : LoopyNode() {
     }
+
+    void setFunctionInputs(json inputs) {
+        LoopyNode::setFunctionInputs(inputs);
+        functionInputs["updateWave"] = 0.0f;
+    }
+
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
@@ -67,14 +62,9 @@ public:
  */
 struct CircleNode : public LoopyNode
 {
-    std::string backgroundKey = "Background";
-    int x,y;
-    float radius;
-    CircleNode(int x, int y, float radius) : LoopyNode()
+    std::string backgroundKey = "backgroundKey";
+    CircleNode() : LoopyNode()
     {
-        this->x = x;
-        this->y = y;
-        this->radius = radius;
     }
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };

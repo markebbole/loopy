@@ -7,6 +7,8 @@
 #include <vector>
 #include <string>
 #include <map>
+#include "json.hpp"
+using json = nlohmann::json;
 
 class LoopyNode;
 
@@ -51,6 +53,8 @@ private:
     bool allInputsReady();
 
 protected:
+
+    json functionInputs;
 
     /**
      * A map from InputConnection parameterNames to LoopyNodes.
@@ -125,6 +129,14 @@ public:
 
     LoopyNode() : LoopyNode(std::vector<InputConnection>(), std::to_string(LoopyNode::nextId++))
     {
+    }
+
+    virtual void setFunctionInputs(json fInputs) {
+        functionInputs = fInputs;
+    }
+
+    virtual json& getFunctionInputs() {
+        return functionInputs;
     }
 
     /**
