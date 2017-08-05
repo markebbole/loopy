@@ -42,7 +42,7 @@ cv::Mat SpeckledNoiseNode::process(LoopyFunctionInput inputs)
 	    	bool isNoise = diceroll < speckleFrequency;
 	    	int roll1 = rand() % 256;
 	    	newImage.at<cv::Vec4b>(r,c) = isNoise ? (colored ? cv::Vec4b(rand() % 256, rand() % 256, rand() % 256, 255) :
-	    		                                               cv::Vec4b(roll1, roll1, roll1))
+	    		                                               cv::Vec4b(roll1, roll1, roll1, 255))
 	    	                                      : cv::Vec4b(0, 0, 0);
 	    }
 	}

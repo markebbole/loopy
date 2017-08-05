@@ -1,0 +1,91 @@
+{
+    "in" : {
+        "type" : "ImageNode",
+        "params" : {
+            "backgroundWidth" : 400,
+            "backgroundHeight" : 400,
+            "file" : "test.png"
+        }
+    },
+
+    "clear" : {
+        "type" : "ClearImageNode",
+        "params" : {
+            "width" : 400,
+            "height" : 400
+        }
+    },
+
+    "scale1" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 1.1,
+            "y" : 1.1,
+            "centerX" : 200,
+            "centerY" : 200
+        },
+        "imageInput" : "mult2"
+    },
+
+    "sine1" : {
+        "type" : "SineNode",
+        "params" : {
+            "frequency" : 0.02,
+            "waveDiff" : 1,
+            "red": 40,
+            "green": 70,
+            "blue": 100
+        },
+        "imageKey" : "clear"
+    },
+
+
+    "sine2" : {
+        "type" : "SineNode",
+        "params" : {
+            "frequency" : 0.1,
+            "waveDiff" : 0.5,
+            "red": 40,
+            "green": 90,
+            "blue": 100
+        },
+        "imageKey" : "clear"
+    },
+
+    "sine_mult" : {
+        "type" : "SubtractionNode",
+        "foregroundKey" : "sine1",
+        "backgroundKey" : "sine2"
+    },
+
+    "rot" : {
+        "type" : "RotateNode",
+        "params" : {
+            "degrees" : 89,
+            "centerX" : 200,
+            "centerY" : 200
+        },
+        "imageInput" : "scale1"
+    },
+
+    "mult2" : {
+        "type" : "AdditionNode",
+        "params" : {
+            "foregroundMultiplier" : 0.99
+        },
+        "foregroundKey" : "in",
+        "backgroundKey" : "-rot"
+    },
+
+    "mult3" : {
+        "type" : "MultiplyNode",
+        "params" : {
+            "foregroundMultiplier" : 0.9
+        },
+        "backgroundKey" : "sine_mult",
+        "foregroundKey" : "mult2"
+    },
+
+
+    "output" : "mult3"
+}

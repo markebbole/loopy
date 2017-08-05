@@ -40,7 +40,6 @@ public:
 
     virtual void setFunctionInputs(json inputs) {
         LoopyNode::setFunctionInputs(inputs);
-        std::cout << inputs << std::endl;
         int w = inputs["width"];
         int h = inputs["height"];
         output = cv::Mat::zeros(h, w, CV_8UC4);
@@ -61,9 +60,27 @@ public:
 
     virtual void setFunctionInputs(json inputs) {
         LoopyNode::setFunctionInputs(inputs);
-        std::cout << inputs << std::endl;
         std::string filename = inputs["file"];
-        output = cv::imread(filename, CV_LOAD_IMAGE_UNCHANGED);
+        cv::Mat loadedImage = cv::imread(filename, CV_LOAD_IMAGE_UNCHANGED);
+        int bgw = loadedImage.cols;
+        int bgh = loadedImage.rows;
+        int top, bottom, left, right = 0;
+        if (inputs.count("backgroundWidth") > 0) {
+            int w = inputs["backgroundWidth"];
+            int border = w-bgw;
+            left = border / 2;
+            right = left + (border % 2);
+        }
+
+        if (inputs.count("backgroundHeight") > 0) {
+            int h = inputs["backgroundHeight"];
+            int border = h-bgh;
+            top = border / 2;
+            bottom = top + (border % 2);
+        }
+        std::cout << top << " " << bottom << " " << left << " " << right << std::endl;
+        cv::copyMakeBorder(loadedImage,loadedImage,top,bottom,left,right,cv::BORDER_CONSTANT,cv::Scalar(0));
+        output = loadedImage;
     }
 };
 

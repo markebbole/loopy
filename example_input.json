@@ -1,9 +1,10 @@
 {
     "in" : {
-        "type" : "ClearImageNode",
+        "type" : "ImageNode",
         "params" : {
-            "width" : 360,
-            "height" : 540
+            "backgroundWidth" : 360,
+            "backgroundHeight" : 540,
+            "file" : "test.png"
         }
     },
 
