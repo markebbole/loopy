@@ -29,6 +29,6 @@ cv::Mat LinearTransformationNode::process(LoopyFunctionInput inputs)
     const cv::Mat& input = inputs[imageInput]->getOutput();
 
     cv::Mat output;
-    cv::warpPerspective(input, output, transform_3x3, cv::Size(input.cols, input.rows), cv::INTER_NEAREST);
+    cv::warpPerspective(input, output, transform_3x3, cv::Size(input.cols, input.rows), cv::INTER_LINEAR);
     return output;
 }

@@ -94,6 +94,12 @@ protected:
      */
     void notifyReceivers();
 
+    float getFloatParam(std::string paramName);
+
+    bool getBoolParam(std::string paramName);
+
+    int getIntParam(std::string paramName);
+
 public:
     /**
      * A key that identifies this node in the graph.

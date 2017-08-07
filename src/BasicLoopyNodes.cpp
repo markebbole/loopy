@@ -34,8 +34,8 @@ cv::Mat SpeckledNoiseNode::process(LoopyFunctionInput inputs)
 {
 	const cv::Mat& image = inputs[imageKey]->getOutput();
 	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
-	float speckleFrequency = functionInputs["speckleFrequency"];
-	bool colored = functionInputs["colored"];
+	float speckleFrequency = getFloatParam("speckleFrequency");
+	bool colored = getBoolParam("colored");
 	for (int r = 0; r < image.rows; ++r) {
 	    for(int c = 0; c < image.cols; ++c) {
 	    	float diceroll = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
@@ -55,12 +55,12 @@ cv::Mat SineNode::process(LoopyFunctionInput inputs)
 	const cv::Mat& image = inputs[imageKey]->getOutput();
 	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
 
-	float waveDiff = functionInputs["waveDiff"];
-    float frequency = functionInputs["frequency"];
-    float updateWave = functionInputs["updateWave"];
-    float red = functionInputs["red"];
-    float green = functionInputs["green"];
-    float blue = functionInputs["blue"];
+	float waveDiff = getFloatParam("waveDiff");
+    float frequency = getFloatParam("frequency");
+    float updateWave = getFloatParam("updateWave");
+    float red = getFloatParam("red");
+    float green = getFloatParam("green");
+    float blue = getFloatParam("blue");
 
 	int pixelCounter = 0;
 	int norm = image.rows * image.cols;
@@ -86,9 +86,9 @@ cv::Mat CircleNode::process(LoopyFunctionInput inputs)
 	cv::Mat newImage = background.clone();
 	double angleChange = 2.0 * CV_PI / numCircleIterations;
 	double angle = 0;
-	int x = functionInputs["x"];
-	int y = functionInputs["y"];
-    float radius = functionInputs["radius"];
+	int x = getIntParam("x");
+	int y = getIntParam("y");
+    float radius = getFloatParam("radius");
 
 	for (int i = 0; i < numCircleIterations; ++i)
 	{

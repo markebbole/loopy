@@ -1,0 +1,52 @@
+{
+    "in" : {
+        "type" : "ImageNode",
+        "params" : {
+            "file" : "sky.png"
+        }
+    },
+
+    "scale1" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 0.76,
+            "y" : 0.75,
+            "centerX" : 350,
+            "centerY" : 29
+        },
+        "imageInput" : "add1"
+    },
+
+    "scale2" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 1.12,
+            "y" : -1.25,
+            "centerX" :300,
+            "centerY" : 180
+        },
+        "imageInput" : "scale1"
+    },
+
+    "rot" : {
+        "type" : "RotateNode",
+        "params" : {
+            "degrees" : 45,
+            "centerX" : 350,
+            "centerY" : 232
+        },
+        "imageInput" : "scale2"
+    },
+
+    "add1" : {
+        "type" : "AdditionNode",
+        "params" : {
+            "foregroundMultiplier" : 0.9999
+        },
+        "foregroundKey" : "-rot",
+        "backgroundKey" : "in"
+    },
+
+
+    "output" : "add1"
+}

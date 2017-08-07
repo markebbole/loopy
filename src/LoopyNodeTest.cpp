@@ -25,14 +25,11 @@ int main()
     lgs.readGraphFromFile(file);
 
     while (true) {
-        std::cout << "what???" << std::endl;
         lgs.setAllInputsReady();
-        std::cout << "OK" << std::endl;
 
         cv::imshow( "Display window", lgs.output->getOutput() );
         int key = cv::waitKey(0);
         // 114 = r
-        std::cout << key << std::endl;
         if (key == 114) {
             lgs.destroyAll();
             lgs.readGraphFromFile(file);

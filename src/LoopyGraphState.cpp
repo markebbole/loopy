@@ -1,6 +1,8 @@
 #include "LoopyGraphState.h"
 #include <fstream>
 
+#include "LoopyNodeExceptions.h"
+
 void LoopyGraphState::readGraphFromFile(string filename)
 {
     cout << filename << endl;
@@ -74,8 +76,12 @@ void LoopyGraphState::parseJson(json& j)
             inputNodes.push_back((LoopyInputNode*)allNodes[k]);
         }
 
-
-        allNodes[k]->setFunctionInputs(o["params"]);
+        try {
+            allNodes[k]->setFunctionInputs(o["params"]);
+        } catch(exception& ex) {
+            std::cout << ex.what() << std::endl;
+            exit(1);
+        }
     }
 
     output = allNodes[j["output"]];

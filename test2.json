@@ -1,0 +1,67 @@
+{
+    "in" : {
+        "type" : "ImageNode",
+        "params" : {
+            "file" : "foot.png"
+        }
+    },
+
+    "scale1" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 0.99,
+            "y" : 1.01,
+            "centerX" : 150,
+            "centerY" : 500
+        },
+        "imageInput" : "add1"
+    },
+
+    "rot" : {
+        "type" : "RotateNode",
+        "params" : {
+            "degrees" : 0.5,
+            "centerX" : 150,
+            "centerY" : 500
+        },
+        "imageInput" : "scale1"
+    },
+
+    "noise" : {
+        "type" : "SpeckledNoiseNode",
+        "params" : {
+            "speckleFrequency" : 0.0,
+            "colored" : false
+        },
+        "imageKey" : "in"
+    },
+
+    "addNoise" : {
+        "type" : "AdditionNode",
+        "foregroundKey" : "scaleNoise",
+        "backgroundKey" : "rot"
+    },
+
+    "scaleNoise" : {
+        "type" : "ScaleNode",
+        "params" : {
+            "x" : 10,
+            "y" : 10,
+            "centerX" : 350,
+            "centerY" : 500
+        },
+        "imageInput" : "noise"
+    },
+
+    "add1" : {
+        "type" : "SubtractionNode",
+        "params" : {
+            "foregroundMultiplier" : 0.5
+        },
+        "foregroundKey" : "-rot",
+        "backgroundKey" : "in"
+    },
+
+
+    "output" : "add1"
+}

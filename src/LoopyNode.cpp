@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "LoopyNodeExceptions.h"
+
 int LoopyNode::nextId = 0;
 
 bool LoopyNode::allInputsReady()
@@ -42,7 +44,12 @@ void LoopyNode::inputReady(LoopyNode* node)
     // If all input nodes are ready then call this node's LoopyFunction and store the output.
     // Then notify all nodes that have this node as an InputConnection that output is ready.
     if (allInputsReady()) {
-        output = process(inputs);
+        try {
+            output = process(inputs);
+        } catch(exception& ex) {
+            std::cout << ex.what() << std::endl;
+            exit(1);
+        }
         inputs.clear();
         notifyReceivers();
     }
@@ -64,4 +71,46 @@ cv::Mat LoopyNode::process(LoopyFunctionInput inputs)
     std::cout << "whoa there!!! you just called the processing function of a base LoopyNode" << std::endl;
     cv::Mat newImage = cv::Mat(0, 0, 0);
     return newImage;
+}
+
+float LoopyNode::getFloatParam(string paramName)
+{
+    if (functionInputs.count(paramName) == 0) {
+        throw MissingRequiredParameterException(paramName);
+    }
+
+    if (!functionInputs[paramName].is_number()) {
+        throw WrongParameterTypeException(paramName);
+    }
+
+    float v = functionInputs[paramName];
+    return v;
+}
+
+int LoopyNode::getIntParam(string paramName)
+{
+    if (functionInputs.count(paramName) == 0) {
+        throw MissingRequiredParameterException(paramName);
+    }
+
+    if (!functionInputs[paramName].is_number()) {
+        throw WrongParameterTypeException(paramName);
+    }
+
+    int v = functionInputs[paramName];
+    return v;
+}
+
+bool LoopyNode::getBoolParam(string paramName)
+{
+    if (functionInputs.count(paramName) == 0) {
+        throw MissingRequiredParameterException(paramName);
+    }
+
+    if (!functionInputs[paramName].is_boolean()) {
+        throw WrongParameterTypeException(paramName);
+    }
+
+    bool v = functionInputs[paramName];
+    return v;
 }
