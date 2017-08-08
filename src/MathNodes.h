@@ -12,7 +12,7 @@ struct AdditionNode : public BinaryNode
 {
     std::string foregroundKey = "foregroundKey";
     std::string backgroundKey = "backgroundKey";
-    AdditionNode(float foregroundMultiplier) : BinaryNode(new AddPixelOperator(foregroundMultiplier))
+    AdditionNode(float foregroundMultiplier) : BinaryNode(NULL)
     {
         firstKey = foregroundKey;
         secondKey = backgroundKey;
@@ -25,7 +25,8 @@ struct AdditionNode : public BinaryNode
     virtual void setFunctionInputs(json inputs) {
         BinaryNode::setFunctionInputs(inputs);
         float foregroundMultiplier = inputs.count("foregroundMultiplier") > 0 ? (float)inputs["foregroundMultiplier"] : 1;
-        op = new AddPixelOperator(foregroundMultiplier);
+        float backgroundMultiplier = inputs.count("backgroundMultiplier") > 0 ? (float)inputs["backgroundMultiplier"] : (1 - foregroundMultiplier);
+        op = new AddPixelOperator(foregroundMultiplier, backgroundMultiplier);
     }
 };
 

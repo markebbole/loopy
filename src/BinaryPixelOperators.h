@@ -10,8 +10,10 @@ struct BinaryPixelOperator
 struct AddPixelOperator : public BinaryPixelOperator
 {
     float foregroundMultiplier;
-    AddPixelOperator(float foregroundMultiplier) : BinaryPixelOperator() {
+    float backgroundMultiplier;
+    AddPixelOperator(float foregroundMultiplier, float backgroundMultiplier) : BinaryPixelOperator() {
         this->foregroundMultiplier = foregroundMultiplier;
+        this->backgroundMultiplier = backgroundMultiplier;
     }
     virtual cv::Vec4b operator()(cv::Vec4b& first, cv::Vec4b& second);
 };

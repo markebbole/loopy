@@ -10,7 +10,7 @@ cv::Vec4b AddPixelOperator::operator()(cv::Vec4b& first, cv::Vec4b& second)
     if (first[3] == 0) {
         return second;
     } else {
-        return foregroundMultiplier * first + (1-foregroundMultiplier) * second;
+        return foregroundMultiplier * first + (backgroundMultiplier) * second;
     }
 }
 
