@@ -150,6 +150,13 @@ public:
      */
     void addInput(InputConnection ic);
 
+    void clearInputs()
+    {
+        outputReceivers.clear();
+        inputConnections.clear();
+        inputNameMapping.clear();
+    }
+
     /**
      * add a new node as input with a parameter name and a boolean representing whether
      * this node should wait for the input node's output before running the first iteration

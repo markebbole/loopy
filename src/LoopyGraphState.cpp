@@ -33,47 +33,48 @@ void LoopyGraphState::parseJson(json& j)
         }
         json o = it.value();
         string type = o["type"];
-
-        if (type == "AdditionNode") {
-            allNodes[k] = new AdditionNode();
-        }
-        if (type == "AdditionModNode") {
-            allNodes[k] = new AdditionModNode();
-        }
-        if (type == "SubtractionNode") {
-            allNodes[k] = new SubtractionNode();
-        }
-        if (type == "DivideNode") {
-            allNodes[k] = new DivideNode();
-        }
-        if (type == "MultiplyNode") {
-            allNodes[k] = new MultiplyNode();
-        }
-        if (type == "ScaleNode") {
-            allNodes[k] = new ScaleNode();
-        }
-        if (type == "TranslateNode") {
-            allNodes[k] = new TranslateNode();
-        }
-        if (type == "RotateNode") {
-            allNodes[k] = new RotateNode();
-        }
-        if (type == "SpeckledNoiseNode") {
-            allNodes[k] = new SpeckledNoiseNode();
-        }
-        if (type == "SineNode") {
-            allNodes[k] = new SineNode();
-        }
-        if (type == "CircleNode") {
-            allNodes[k] = new CircleNode();
-        }
-        if (type == "ClearImageNode") {
-            allNodes[k] = new ClearImageNode();
-            inputNodes.push_back((LoopyInputNode*)allNodes[k]);
-        }
-        if (type == "ImageNode") {
-            allNodes[k] = new ImageNode();
-            inputNodes.push_back((LoopyInputNode*)allNodes[k]);
+        if (allNodes.count(k) == 0) {
+            if (type == "AdditionNode") {
+                allNodes[k] = new AdditionNode();
+            }
+            if (type == "AdditionModNode") {
+                allNodes[k] = new AdditionModNode();
+            }
+            if (type == "SubtractionNode") {
+                allNodes[k] = new SubtractionNode();
+            }
+            if (type == "DivideNode") {
+                allNodes[k] = new DivideNode();
+            }
+            if (type == "MultiplyNode") {
+                allNodes[k] = new MultiplyNode();
+            }
+            if (type == "ScaleNode") {
+                allNodes[k] = new ScaleNode();
+            }
+            if (type == "TranslateNode") {
+                allNodes[k] = new TranslateNode();
+            }
+            if (type == "RotateNode") {
+                allNodes[k] = new RotateNode();
+            }
+            if (type == "SpeckledNoiseNode") {
+                allNodes[k] = new SpeckledNoiseNode();
+            }
+            if (type == "SineNode") {
+                allNodes[k] = new SineNode();
+            }
+            if (type == "CircleNode") {
+                allNodes[k] = new CircleNode();
+            }
+            if (type == "ClearImageNode") {
+                allNodes[k] = new ClearImageNode();
+                inputNodes.push_back((LoopyInputNode*)allNodes[k]);
+            }
+            if (type == "ImageNode") {
+                allNodes[k] = new ImageNode();
+                inputNodes.push_back((LoopyInputNode*)allNodes[k]);
+            }
         }
 
         try {
@@ -88,6 +89,12 @@ void LoopyGraphState::parseJson(json& j)
 }
 
 void LoopyGraphState::parseInputs(json& j) {
+
+    cout << "hello" << endl;
+    for (auto const &node : allNodes) {
+        allNodes[node.first]->clearInputs();
+    }
+
     for (json::iterator it = j.begin(); it != j.end(); ++it) {
         if (it.key() == "output") {
             continue;

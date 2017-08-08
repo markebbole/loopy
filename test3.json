@@ -9,7 +9,8 @@
     "linker" : {
         "type" : "AdditionNode",
         "params" : {
-            "foregroundMultiplier" : 0
+            "foregroundMultiplier" : 0.2,
+            "backgroundMultiplier" : 0.85
         },
         "foregroundKey" : "in",
         "backgroundKey" : "-add1"
@@ -18,10 +19,10 @@
     "scale1" : {
         "type" : "ScaleNode",
         "params" : {
-            "x" : 1.1,
-            "y" : 1.1,
-            "centerX" : 350,
-            "centerY" : 500
+            "x" : 2,
+            "y" : -2,
+            "centerX" : 240,
+            "centerY" : 300
         },
         "imageInput" : "add1"
     },
@@ -29,9 +30,9 @@
     "rot" : {
         "type" : "RotateNode",
         "params" : {
-            "degrees" : 10,
-            "centerX" : 350,
-            "centerY" : 500
+            "degrees" : 0,
+            "centerX" : 240,
+            "centerY" : 300
         },
         "imageInput" : "scale1"
     },
@@ -39,8 +40,8 @@
     "add1" : {
         "type" : "AdditionNode",
         "params" : {
-            "foregroundMultiplier" : 0.6,
-            "backgroundMultiplier" : 0.48
+            "foregroundMultiplier" : 0.9,
+            "backgroundMultiplier" : 0.4
         },
         "foregroundKey" : "-rot",
         "backgroundKey" : "linker"

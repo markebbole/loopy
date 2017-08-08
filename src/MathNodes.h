@@ -26,6 +26,9 @@ struct AdditionNode : public BinaryNode
         BinaryNode::setFunctionInputs(inputs);
         float foregroundMultiplier = inputs.count("foregroundMultiplier") > 0 ? (float)inputs["foregroundMultiplier"] : 1;
         float backgroundMultiplier = inputs.count("backgroundMultiplier") > 0 ? (float)inputs["backgroundMultiplier"] : (1 - foregroundMultiplier);
+        if (op != NULL) {
+            delete op;
+        }
         op = new AddPixelOperator(foregroundMultiplier, backgroundMultiplier);
     }
 };

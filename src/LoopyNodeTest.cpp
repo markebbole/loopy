@@ -29,15 +29,21 @@ int main()
 
         cv::imshow( "Display window", lgs.output->getOutput() );
         int key = cv::waitKey(0);
+        cout << key << endl;
         // 114 = r
         if (key == 114) {
-            lgs.destroyAll();
+            //lgs.destroyAll();
             lgs.readGraphFromFile(file);
         }
 
         if (key == 102) {
             cout << "Type in a path to a graph file: ";
             cin >> file;
+            //lgs.destroyAll();
+            lgs.readGraphFromFile(file);
+        }
+
+        if (key == 113) {
             lgs.destroyAll();
             lgs.readGraphFromFile(file);
         }
