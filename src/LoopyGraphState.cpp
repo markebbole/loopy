@@ -1,5 +1,6 @@
 #include "LoopyGraphState.h"
 #include <fstream>
+#include <sstream>
 
 #include "LoopyNodeExceptions.h"
 

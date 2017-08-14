@@ -29,6 +29,14 @@ public:
     {
     }
 
+    virtual void setFunctionInputs(json inputs) {
+        LoopyNode::setFunctionInputs(inputs);
+        float foregroundMultiplier = inputs.count("foregroundMultiplier") > 0 ? (float)inputs["foregroundMultiplier"] : 1;
+        float backgroundMultiplier = inputs.count("backgroundMultiplier") > 0 ? (float)inputs["backgroundMultiplier"] : (1 - foregroundMultiplier);
+        functionInputs["foregroundMultiplier"] = foregroundMultiplier;
+        functionInputs["backgroundMultiplier"] = backgroundMultiplier;
+    }
+
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
  
@@ -49,7 +57,7 @@ struct SineNode : public LoopyNode
     SineNode() : LoopyNode() {
     }
 
-    void setFunctionInputs(json inputs) {
+    virtual void setFunctionInputs(json inputs) {
         LoopyNode::setFunctionInputs(inputs);
         functionInputs["updateWave"] = 0.0f;
     }

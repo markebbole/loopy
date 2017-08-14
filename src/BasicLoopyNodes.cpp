@@ -10,7 +10,6 @@ cv::Mat BinaryNode::process(LoopyFunctionInput inputs)
 		return inputs[firstKey]->getOutput();
 	}
 
-	// Iterate through back layer and add the new image on top of it.
 	const cv::Mat& first = inputs[firstKey]->getOutput();
 	const cv::Mat& second = inputs[secondKey]->getOutput();
 
@@ -19,11 +18,13 @@ cv::Mat BinaryNode::process(LoopyFunctionInput inputs)
 
 	cv::Mat output = cv::Mat(maxR, maxC, first.type());
 
+	float f = getFloatParam("foregroundMultiplier");
+	float b = getFloatParam("backgroundMultiplier");
 	for (int r = 0; r < maxR; ++r) {
 		for (int c = 0; c < maxC; ++c) {
 			cv::Vec4b firstPoint = (r >= first.rows || c >= first.cols) ? cv::Vec4b(0, 0, 0, 0) : first.at<cv::Vec4b>(r,c);
 			cv::Vec4b secondPoint = (r >= second.rows || c >= second.cols) ? cv::Vec4b(0, 0, 0, 0) : second.at<cv::Vec4b>(r,c);
-			output.at<cv::Vec4b>(r,c) = (*op)(firstPoint, secondPoint);
+			output.at<cv::Vec4b>(r,c) = (*op)(firstPoint, secondPoint, f, b);
 		}
 	}
 
