@@ -53,7 +53,7 @@ class LoopyNumberNode : public LoopyInputNode
 public:
     LoopyNumberNode(std::string outputKey) : LoopyInputNode(outputKey)
     {
-        output = cv::Mat::zeros(1, 1, CV_16SC1);
+        output = cv::Mat::zeros(1, 1, CV_32F);
     }
 
     LoopyNumberNode() : LoopyNumberNode(std::to_string(LoopyNode::nextId++))
