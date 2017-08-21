@@ -38,7 +38,7 @@ cv::Mat TranslateNode::process(LoopyFunctionInput inputs)
     float x = getFloatParam("x");
     float y = getFloatParam("y");
     transform_3x3 = Make3x3TranslationMatrix(x, y);
-    LinearTransformationNode::process(inputs);
+    return LinearTransformationNode::process(inputs);
 }
 
 cv::Mat ScaleNode::process(LoopyFunctionInput inputs)
@@ -50,7 +50,7 @@ cv::Mat ScaleNode::process(LoopyFunctionInput inputs)
     cv::Mat t1 = Make3x3TranslationMatrix(-centerX, -centerY);
     cv::Mat scaleMatrix = t1.inv() * Make3x3ScalingMatrix(x, y) * t1;
     transform_3x3 = scaleMatrix;
-    LinearTransformationNode::process(inputs);
+    return LinearTransformationNode::process(inputs);
 }
 
 cv::Mat RotateNode::process(LoopyFunctionInput inputs)
@@ -62,5 +62,5 @@ cv::Mat RotateNode::process(LoopyFunctionInput inputs)
     cv::Mat t1 = Make3x3TranslationMatrix(-centerX, -centerY);
     cv::Mat mult = t1.inv() * Make3x3RotationMatrix(theta) * t1;
     transform_3x3 = mult;
-    LinearTransformationNode::process(inputs);
+    return LinearTransformationNode::process(inputs);
 }

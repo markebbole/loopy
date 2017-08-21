@@ -19,7 +19,7 @@ cv::Mat BinaryNode::process(LoopyFunctionInput inputs)
 	cv::Mat output = cv::Mat(maxR, maxC, first.type());
 
 	float f = inputs.count("foregroundMultiplier") > 0 ? getFloatParam("foregroundMultiplier") : 1;
-	float b = inputs.count("backgroundMultiplier") > 0 ? getFloatParam("backgroundMultiplier") : (1 - foregroundMultiplier);
+	float b = inputs.count("backgroundMultiplier") > 0 ? getFloatParam("backgroundMultiplier") : (1 - f);
 
 	for (int r = 0; r < maxR; ++r) {
 		for (int c = 0; c < maxC; ++c) {

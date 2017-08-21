@@ -46,4 +46,5 @@ cv::Mat ImageNode::process(LoopyFunctionInput inputs)
     }
     cv::copyMakeBorder(loadedImage,loadedImage,top,bottom,left,right,cv::BORDER_CONSTANT,cv::Scalar(0));
     output = loadedImage;
+    return output;
 }

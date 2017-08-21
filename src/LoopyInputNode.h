@@ -3,6 +3,8 @@
 
 #include "LoopyNode.h"
 #include <string>
+
+using namespace std;
 class LoopyInputNode : public LoopyNode
 {
 
@@ -51,7 +53,7 @@ class LoopyNumberNode : public LoopyInputNode
 public:
     LoopyNumberNode(std::string outputKey) : LoopyInputNode(outputKey)
     {
-        output = cv::Mat::zeros(1, 1, CV_16FC1);
+        output = cv::Mat::zeros(1, 1, CV_16SC1);
     }
 
     LoopyNumberNode() : LoopyNumberNode(std::to_string(LoopyNode::nextId++))
@@ -61,7 +63,7 @@ public:
     void setOutput(float number) {
         output.at<float>(0, 0) = number;
     }
-}
+};
 
 class ImageNode : public LoopyInputNode
 {
