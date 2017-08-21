@@ -1,4 +1,6 @@
 CMakeFiles/
+*.png
+*.jpg
 .DS_STORE
 Makefile
 CMakeCache.txt
