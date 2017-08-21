@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "LoopyNodeExceptions.h"
+#include "BinaryPixelOperators.h"
 
 void LoopyGraphState::readGraphFromFile(string filename)
 {
@@ -45,6 +46,13 @@ void LoopyGraphState::destroyAll()
     output = NULL;
 }
 
+LoopyNode* setupBinaryNode(BinaryPixelOperator* op)
+{
+    BinaryNode* b = new BinaryNode(op);
+    b->firstKey = "foregroundKey";
+    b->secondKey = "backgroundKey";
+    return b;
+}
 // this is super dumb but it'll do for now. there's a script that generates these names from a list of class names
 void LoopyGraphState::parseJson(json& j)
 {
@@ -57,19 +65,19 @@ void LoopyGraphState::parseJson(json& j)
         string type = o["type"];
         if (allNodes.count(k) == 0) {
             if (type == "AdditionNode") {
-                allNodes[k] = new AdditionNode();
+                allNodes[k] = setupBinaryNode(new AddPixelOperator());
             }
             if (type == "AdditionModNode") {
-                allNodes[k] = new AdditionModNode();
+                allNodes[k] = setupBinaryNode(new AddPixelModOperator());
             }
             if (type == "SubtractionNode") {
-                allNodes[k] = new SubtractionNode();
+                allNodes[k] = setupBinaryNode(new SubtractPixelOperator());
             }
             if (type == "DivideNode") {
-                allNodes[k] = new DivideNode();
+                allNodes[k] = setupBinaryNode(new DividePixelOperator());
             }
             if (type == "MultiplyNode") {
-                allNodes[k] = new MultiplyNode();
+                allNodes[k] = setupBinaryNode(new MultiplyPixelOperator());
             }
             if (type == "ScaleNode") {
                 allNodes[k] = new ScaleNode();

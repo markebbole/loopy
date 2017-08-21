@@ -8,7 +8,6 @@
 
 #include "BasicLoopyNodes.h"
 #include "LinearTransformations.h"
-#include "MathNodes.h"
 #include "LoopyGraphState.h"
 
 int main()

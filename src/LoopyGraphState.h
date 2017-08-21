@@ -5,7 +5,6 @@
 #include "LoopyInputNode.h"
 #include "BasicLoopyNodes.h"
 #include "LinearTransformations.h"
-#include "MathNodes.h"
 
 #include <string>
 #include <map>
