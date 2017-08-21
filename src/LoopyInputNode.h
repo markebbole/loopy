@@ -46,6 +46,23 @@ public:
     }
 };
 
+class LoopyNumberNode : public LoopyInputNode
+{
+public:
+    LoopyNumberNode(std::string outputKey) : LoopyInputNode(outputKey)
+    {
+        output = cv::Mat::zeros(1, 1, CV_16FC1);
+    }
+
+    LoopyNumberNode() : LoopyNumberNode(std::to_string(LoopyNode::nextId++))
+    {
+    }
+
+    void setOutput(float number) {
+        output.at<float>(0, 0) = number;
+    }
+}
+
 class ImageNode : public LoopyInputNode
 {
 public:
