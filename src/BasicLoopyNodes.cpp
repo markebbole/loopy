@@ -79,28 +79,3 @@ cv::Mat SineNode::process(LoopyFunctionInput inputs)
 	
 	return newImage;
 }
-
-cv::Mat CircleNode::process(LoopyFunctionInput inputs)
-{
-	const cv::Mat& background = inputs[backgroundKey]->getOutput();
-	const int numCircleIterations = 300;
-	cv::Mat newImage = background.clone();
-	double angleChange = 2.0 * CV_PI / numCircleIterations;
-	double angle = 0;
-	int x = getIntParam("x");
-	int y = getIntParam("y");
-    float radius = getFloatParam("radius");
-
-	for (int i = 0; i < numCircleIterations; ++i)
-	{
-		int x_ = std::floor(x + radius * cos(angle));
-		int y_ = std::floor(y + radius * sin(angle));
-
-		x_ = MIN(MAX(x_, 0), background.cols-1);
-		y_ = MIN(MAX(y_, 0), background.rows-1);
-		newImage.at<cv::Vec4b>(y_, x_) = cv::Vec4b(255, 255, 255, 255);
-		angle += angleChange;
-	}
-
-	return newImage;
-}

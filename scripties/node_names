@@ -8,6 +8,5 @@ TranslateNode
 RotateNode
 SpeckledNoiseNode
 SineNode
-CircleNode
 ClearImageNode_
 ImageNode_

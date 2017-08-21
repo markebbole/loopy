@@ -25,6 +25,7 @@ void LoopyGraphState::destroyAll()
     output = NULL;
 }
 
+// this is super dumb but it'll do for now. there's a script that generates these names from a list of class names
 void LoopyGraphState::parseJson(json& j)
 {
     for (json::iterator it = j.begin(); it != j.end(); ++it) {
@@ -64,9 +65,6 @@ void LoopyGraphState::parseJson(json& j)
             }
             if (type == "SineNode") {
                 allNodes[k] = new SineNode();
-            }
-            if (type == "CircleNode") {
-                allNodes[k] = new CircleNode();
             }
             if (type == "ClearImageNode") {
                 allNodes[k] = new ClearImageNode();

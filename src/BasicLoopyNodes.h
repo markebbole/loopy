@@ -65,16 +65,4 @@ struct SineNode : public LoopyNode
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
-/**
- * Draw a white circle
- */
-struct CircleNode : public LoopyNode
-{
-    std::string backgroundKey = "backgroundKey";
-    CircleNode() : LoopyNode()
-    {
-    }
-    virtual cv::Mat process(LoopyFunctionInput inputs);
-};
-
 #endif

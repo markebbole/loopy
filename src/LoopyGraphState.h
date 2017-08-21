@@ -33,7 +33,6 @@ public:
 
     void setAllInputsReady()
     {
-        cout << "set all ready " << inputNodes.size() << endl;
         for (size_t i = 0; i < inputNodes.size(); ++i) {
             inputNodes[i]->setReady();
         }
