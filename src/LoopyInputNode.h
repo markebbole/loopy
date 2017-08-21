@@ -26,25 +26,25 @@ public:
 
 };
 
-class ClearImageNode : public LoopyInputNode
-{
-public:
+// class ClearImageNode : public LoopyInputNode
+// {
+// public:
 
-    ClearImageNode(std::string outputKey) : LoopyInputNode(outputKey)
-    {
-    }
+//     ClearImageNode(std::string outputKey) : LoopyInputNode(outputKey)
+//     {
+//     }
 
-    ClearImageNode() : ClearImageNode(std::to_string(LoopyNode::nextId++))
-    {
-    }
+//     ClearImageNode() : ClearImageNode(std::to_string(LoopyNode::nextId++))
+//     {
+//     }
 
-    virtual void setFunctionInputs(json inputs) {
-        LoopyNode::setFunctionInputs(inputs);
-        int w = getIntParam("width");
-        int h = getIntParam("height");
-        output = cv::Mat::zeros(h, w, CV_8UC4);
-    }
-};
+//     virtual void setFunctionInputs(json inputs) {
+//         LoopyNode::setFunctionInputs(inputs);
+//         int w = getIntParam("width");
+//         int h = getIntParam("height");
+//         output = cv::Mat::zeros(h, w, CV_8UC4);
+//     }
+// };
 
 class LoopyNumberNode : public LoopyInputNode
 {
@@ -65,44 +65,29 @@ public:
 
 class ImageNode : public LoopyInputNode
 {
+    int cachedW;
+    int cachedH;
+    string cachedFilename;
+    string currentFilename;
 public:
 
     ImageNode(std::string outputKey) : LoopyInputNode(outputKey)
     {
+        cachedW = 0;
+        cachedH = 0;
+        cachedFilename = "";
     }
 
     ImageNode() : ImageNode(std::to_string(LoopyNode::nextId++))
     {
     }
 
-    virtual void setFunctionInputs(json inputs) {
-        LoopyNode::setFunctionInputs(inputs);
-        std::string filename = inputs["file"];
-        cv::Mat loadedImage = cv::imread(filename, CV_LOAD_IMAGE_UNCHANGED);
-        int bgw = loadedImage.cols;
-        int bgh = loadedImage.rows;
-        int top, bottom, left, right;
-        top = 0;
-        bottom = 0;
-        left = 0;
-        right = 0;
-        std::cout << bgw << " " << bgh << std::endl;
-        if (inputs.count("backgroundWidth") > 0) {
-            int w = inputs["backgroundWidth"];
-            int border = w-bgw;
-            left = border / 2;
-            right = left + (border % 2);
-        }
-
-        if (inputs.count("backgroundHeight") > 0) {
-            int h = inputs["backgroundHeight"];
-            int border = h-bgh;
-            top = border / 2;
-            bottom = top + (border % 2);
-        }
-        cv::copyMakeBorder(loadedImage,loadedImage,top,bottom,left,right,cv::BORDER_CONSTANT,cv::Scalar(0));
-        output = loadedImage;
+    void setFileName(string filename)
+    {
+        currentFilename = filename;
     }
+
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 #endif

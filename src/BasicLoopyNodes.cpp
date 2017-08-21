@@ -18,8 +18,9 @@ cv::Mat BinaryNode::process(LoopyFunctionInput inputs)
 
 	cv::Mat output = cv::Mat(maxR, maxC, first.type());
 
-	float f = getFloatParam("foregroundMultiplier");
-	float b = getFloatParam("backgroundMultiplier");
+	float f = inputs.count("foregroundMultiplier") > 0 ? getFloatParam("foregroundMultiplier") : 1;
+	float b = inputs.count("backgroundMultiplier") > 0 ? getFloatParam("backgroundMultiplier") : (1 - foregroundMultiplier);
+
 	for (int r = 0; r < maxR; ++r) {
 		for (int c = 0; c < maxC; ++c) {
 			cv::Vec4b firstPoint = (r >= first.rows || c >= first.cols) ? cv::Vec4b(0, 0, 0, 0) : first.at<cv::Vec4b>(r,c);
@@ -51,31 +52,31 @@ cv::Mat SpeckledNoiseNode::process(LoopyFunctionInput inputs)
 	return newImage;
 };
 
-cv::Mat SineNode::process(LoopyFunctionInput inputs)
-{
-	const cv::Mat& image = inputs[imageKey]->getOutput();
-	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
+// cv::Mat SineNode::process(LoopyFunctionInput inputs)
+// {
+// 	const cv::Mat& image = inputs[imageKey]->getOutput();
+// 	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
 
-	float waveDiff = getFloatParam("waveDiff");
-    float frequency = getFloatParam("frequency");
-    float updateWave = getFloatParam("updateWave");
-    float red = getFloatParam("red");
-    float green = getFloatParam("green");
-    float blue = getFloatParam("blue");
+// 	float waveDiff = getFloatParam("waveDiff");
+//     float frequency = getFloatParam("frequency");
+//     float updateWave = getFloatParam("updateWave");
+//     float red = getFloatParam("red");
+//     float green = getFloatParam("green");
+//     float blue = getFloatParam("blue");
 
-	int pixelCounter = 0;
-	int norm = image.rows * image.cols;
-	for (int r = 0; r < image.rows; ++r) {
-	    for(int c = 0; c < image.cols; ++c) {
-	    	float s = (1 + sin(updateWave + frequency*pixelCounter)) / 2;
-	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(blue + s * 150, green, red + 70 * sqrt(s), 255);
-	    }
-	    pixelCounter++;
+// 	int pixelCounter = 0;
+// 	int norm = image.rows * image.cols;
+// 	for (int r = 0; r < image.rows; ++r) {
+// 	    for(int c = 0; c < image.cols; ++c) {
+// 	    	float s = (1 + sin(updateWave + frequency*pixelCounter)) / 2;
+// 	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(blue + s * 150, green, red + 70 * sqrt(s), 255);
+// 	    }
+// 	    pixelCounter++;
 	    
 
-	}
-	functionInputs["updateWave"] = updateWave + waveDiff;
+// 	}
+// 	//functionInputs["updateWave"] = updateWave + waveDiff;
 
 	
-	return newImage;
-}
+// 	return newImage;
+// }

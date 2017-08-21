@@ -1,4 +1,3 @@
-
 #ifndef LOOPY_NODE
 #define LOOPY_NODE
 
@@ -53,9 +52,6 @@ private:
     bool allInputsReady();
 
 protected:
-
-    json functionInputs;
-
     /**
      * A map from InputConnection parameterNames to LoopyNodes.
      * This stores all a node's inputs
@@ -135,14 +131,6 @@ public:
 
     LoopyNode() : LoopyNode(std::vector<InputConnection>(), std::to_string(LoopyNode::nextId++))
     {
-    }
-
-    virtual void setFunctionInputs(json fInputs) {
-        functionInputs = fInputs;
-    }
-
-    virtual json& getFunctionInputs() {
-        return functionInputs;
     }
 
     /**

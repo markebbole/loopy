@@ -25,39 +25,17 @@ struct LinearTransformationNode : public LoopyNode
 
 struct TranslateNode : public LinearTransformationNode
 {
-    virtual void setFunctionInputs(json inputs) {
-        LinearTransformationNode::setFunctionInputs(inputs);
-        float x = getFloatParam("x");
-        float y = getFloatParam("y");
-        transform_3x3 = Make3x3TranslationMatrix(x, y);
-    }
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 struct ScaleNode : public LinearTransformationNode
 {
-    virtual void setFunctionInputs(json inputs) {
-        LinearTransformationNode::setFunctionInputs(inputs);
-        float x = getFloatParam("x");
-        float y = getFloatParam("y");
-        float centerX = getFloatParam("centerX");
-        float centerY = getFloatParam("centerY");
-        cv::Mat t1 = Make3x3TranslationMatrix(-centerX, -centerY);
-        cv::Mat scaleMatrix = t1.inv() * Make3x3ScalingMatrix(x, y) * t1;
-        transform_3x3 = scaleMatrix;
-    }
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 struct RotateNode : public LinearTransformationNode
 {
-    virtual void setFunctionInputs(json inputs) {
-        LinearTransformationNode::setFunctionInputs(inputs);
-        float rotationDegrees = getFloatParam("degrees");
-        float centerX = getFloatParam("centerX");
-        float centerY = getFloatParam("centerY");
-        float theta = rotationDegrees * (CV_PI / 180);
-        cv::Mat t1 = Make3x3TranslationMatrix(-centerX, -centerY);
-        cv::Mat mult = t1.inv() * Make3x3RotationMatrix(theta) * t1;
-        transform_3x3 = mult;
-    }
+    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
+
 #endif

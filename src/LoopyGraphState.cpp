@@ -91,8 +91,15 @@ void LoopyGraphState::parseJson(json& j)
                 inputNodes.push_back((LoopyInputNode*)allNodes[k]);
             }
             if (type == "ImageNode") {
-                allNodes[k] = new ImageNode();
-                inputNodes.push_back((LoopyInputNode*)allNodes[k]);
+                //This is a quick hack for right now to handle filenames as parameters.
+                //I'm doing this right now because nodes can only have matrices as input.
+                //That will change soon.
+                string filename = o["params"]["file"];
+                ImageNode *imgNode = new ImageNode();
+                imgNode->setFileName(filename);
+
+                allNodes[k] = imgNode;
+                inputNodes.push_back(imgNode);
             }
         }
 
@@ -139,6 +146,13 @@ void LoopyGraphState::parseParams(LoopyNode* node, json& paramObject, map<string
         json& paramObj = it3.value();
         if (paramObj.is_string()) {
             string p = paramObj;
+            // For now, just skip over parameters that are strings
+            // but don't name an existing node...
+            // This can get removed after I fix
+            // the fact that nodes can't have strings as output (only matrices)
+            if (allNodes.count(p) == 0) {
+                continue;
+            }
             addInputFromNodeName(n, paramName, p, allNodes);
         } else if (paramObj.is_number()) {
             float f = paramObj;

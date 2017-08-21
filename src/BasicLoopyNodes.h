@@ -29,14 +29,6 @@ public:
     {
     }
 
-    virtual void setFunctionInputs(json inputs) {
-        LoopyNode::setFunctionInputs(inputs);
-        float foregroundMultiplier = inputs.count("foregroundMultiplier") > 0 ? (float)inputs["foregroundMultiplier"] : 1;
-        float backgroundMultiplier = inputs.count("backgroundMultiplier") > 0 ? (float)inputs["backgroundMultiplier"] : (1 - foregroundMultiplier);
-        functionInputs["foregroundMultiplier"] = foregroundMultiplier;
-        functionInputs["backgroundMultiplier"] = backgroundMultiplier;
-    }
-
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
  
@@ -51,18 +43,13 @@ struct SpeckledNoiseNode : public LoopyNode
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
-struct SineNode : public LoopyNode
-{
-    std::string imageKey = "imageKey";
-    SineNode() : LoopyNode() {
-    }
+// struct SineNode : public LoopyNode
+// {
+//     std::string imageKey = "imageKey";
+//     SineNode() : LoopyNode() {
+//     }
 
-    virtual void setFunctionInputs(json inputs) {
-        LoopyNode::setFunctionInputs(inputs);
-        functionInputs["updateWave"] = 0.0f;
-    }
-
-    virtual cv::Mat process(LoopyFunctionInput inputs);
-};
+//     virtual cv::Mat process(LoopyFunctionInput inputs);
+// };
 
 #endif

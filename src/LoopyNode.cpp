@@ -75,42 +75,23 @@ cv::Mat LoopyNode::process(LoopyFunctionInput inputs)
 
 float LoopyNode::getFloatParam(string paramName)
 {
-    if (functionInputs.count(paramName) == 0) {
+    if (inputs.count(paramName) == 0) {
         throw MissingRequiredParameterException(paramName);
     }
 
-    if (!functionInputs[paramName].is_number()) {
-        throw WrongParameterTypeException(paramName);
-    }
-
-    float v = functionInputs[paramName];
+    LoopyNode* parameterNode = inputs[paramName];
+    float v = parameterNode->getOutput().at<float>(0, 0);
     return v;
 }
 
 int LoopyNode::getIntParam(string paramName)
 {
-    if (functionInputs.count(paramName) == 0) {
-        throw MissingRequiredParameterException(paramName);
-    }
-
-    if (!functionInputs[paramName].is_number()) {
-        throw WrongParameterTypeException(paramName);
-    }
-
-    int v = functionInputs[paramName];
+    int v = (int)floor(getFloatParam(paramName));
     return v;
 }
 
 bool LoopyNode::getBoolParam(string paramName)
 {
-    if (functionInputs.count(paramName) == 0) {
-        throw MissingRequiredParameterException(paramName);
-    }
-
-    if (!functionInputs[paramName].is_boolean()) {
-        throw WrongParameterTypeException(paramName);
-    }
-
-    bool v = functionInputs[paramName];
-    return v;
+    int v = getIntParam(paramName);
+    return v != 0;
 }
