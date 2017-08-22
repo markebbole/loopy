@@ -28,26 +28,6 @@ public:
 
 };
 
-// class ClearImageNode : public LoopyInputNode
-// {
-// public:
-
-//     ClearImageNode(std::string outputKey) : LoopyInputNode(outputKey)
-//     {
-//     }
-
-//     ClearImageNode() : ClearImageNode(std::to_string(LoopyNode::nextId++))
-//     {
-//     }
-
-//     virtual void setFunctionInputs(json inputs) {
-//         LoopyNode::setFunctionInputs(inputs);
-//         int w = getIntParam("width");
-//         int h = getIntParam("height");
-//         output = cv::Mat::zeros(h, w, CV_8UC4);
-//     }
-// };
-
 class LoopyNumberNode : public LoopyInputNode
 {
 public:
@@ -63,33 +43,6 @@ public:
     void setOutput(float number) {
         output.at<float>(0, 0) = number;
     }
-};
-
-class ImageNode : public LoopyNode
-{
-    int cachedW;
-    int cachedH;
-    string cachedFilename;
-    string currentFilename;
-public:
-
-    ImageNode(std::string outputKey) : LoopyNode(outputKey)
-    {
-        cachedW = 0;
-        cachedH = 0;
-        cachedFilename = "";
-    }
-
-    ImageNode() : ImageNode(std::to_string(LoopyNode::nextId++))
-    {
-    }
-
-    void setFileName(string filename)
-    {
-        currentFilename = filename;
-    }
-
-    virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
 #endif

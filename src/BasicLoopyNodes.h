@@ -43,6 +43,33 @@ struct SpeckledNoiseNode : public LoopyNode
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
+class ImageNode : public LoopyNode
+{
+    int cachedW;
+    int cachedH;
+    string cachedFilename;
+    string currentFilename;
+public:
+
+    ImageNode(std::string outputKey) : LoopyNode(outputKey)
+    {
+        cachedW = 0;
+        cachedH = 0;
+        cachedFilename = "";
+    }
+
+    ImageNode() : ImageNode(std::to_string(LoopyNode::nextId++))
+    {
+    }
+
+    void setFileName(string filename)
+    {
+        currentFilename = filename;
+    }
+
+    virtual cv::Mat process(LoopyFunctionInput inputs);
+};
+
 // struct SineNode : public LoopyNode
 // {
 //     std::string imageKey = "imageKey";

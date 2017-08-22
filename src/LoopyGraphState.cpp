@@ -64,7 +64,7 @@ LoopyNode* setupBinaryNode(BinaryPixelOperator* op)
     b->secondKey = "backgroundKey";
     return b;
 }
-// this is super dumb but it'll do for now. there's a script that generates these names from a list of class names
+// this is super dumb but it'll do for now
 void LoopyGraphState::parseJson(json& j)
 {
     for (json::iterator it = j.begin(); it != j.end(); ++it) {
@@ -121,13 +121,6 @@ void LoopyGraphState::parseJson(json& j)
 
             }
         }
-
-        // try {
-        //     allNodes[k]->setFunctionInputs(o["params"]);
-        // } catch(exception& ex) {
-        //     std::cout << ex.what() << std::endl;
-        //     exit(1);
-        // }
     }
 
     output = allNodes[j["output"]];
