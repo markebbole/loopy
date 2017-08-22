@@ -65,7 +65,7 @@ public:
     }
 };
 
-class ImageNode : public LoopyInputNode
+class ImageNode : public LoopyNode
 {
     int cachedW;
     int cachedH;
@@ -73,7 +73,7 @@ class ImageNode : public LoopyInputNode
     string currentFilename;
 public:
 
-    ImageNode(std::string outputKey) : LoopyInputNode(outputKey)
+    ImageNode(std::string outputKey) : LoopyNode(outputKey)
     {
         cachedW = 0;
         cachedH = 0;
