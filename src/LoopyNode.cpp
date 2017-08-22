@@ -38,7 +38,6 @@ void LoopyNode::inputReady(LoopyNode* node)
         std::cout << "You're notifying a node without any input connections that some input is ready! Bad!" << std::endl;
         exit(1);
     }
-    cout << "k" << endl;
     // Translate the node's outputKey to the parameterName specified in the corresponding InputConnection.
     inputs[inputNameMapping[node->outputKey]] = node;
 

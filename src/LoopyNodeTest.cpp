@@ -28,7 +28,6 @@ int main()
 
         cv::imshow( "Display window", lgs.output->getOutput() );
         int key = cv::waitKey(0);
-        cout << key << endl;
         // 114 = r
         if (key == 114) {
             //lgs.destroyAll();
