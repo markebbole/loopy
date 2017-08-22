@@ -14,7 +14,7 @@ public:
 	 * Since this node doesn't depend on any inputs this is a method that 
 	 * notifies all child nodes that output is ready.
 	 */
-    void setReady();
+    virtual void setReady();
 
     void setOutput(cv::Mat img);
 
@@ -42,6 +42,28 @@ public:
 
     void setOutput(float number) {
         output.at<float>(0, 0) = number;
+    }
+};
+
+class TickerNode : public LoopyInputNode
+{
+public:
+    TickerNode(std::string outputKey) : LoopyInputNode(outputKey)
+    {
+        output = cv::Mat::zeros(1, 1, CV_32F);
+    }
+
+    TickerNode() : TickerNode(std::to_string(LoopyNode::nextId++))
+    {
+    }
+    void setOutput(float number) {
+        output.at<float>(0, 0) = number;
+    }
+
+    virtual void setReady()
+    {
+        LoopyInputNode::setReady();
+        output.at<float>(0, 0) = output.at<float>(0, 0) + 1;
     }
 };
 

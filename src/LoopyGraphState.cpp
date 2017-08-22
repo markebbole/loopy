@@ -102,12 +102,12 @@ void LoopyGraphState::parseJson(json& j)
             if (type == "SpeckledNoiseNode") {
                 allNodes[k] = new SpeckledNoiseNode();
             }
+            if (type == "TickerNode") {
+                allNodes[k] = new TickerNode();
+                inputNodes.push_back((LoopyInputNode*)allNodes[k]);
+            }
             // if (type == "SineNode") {
             //     allNodes[k] = new SineNode();
-            // }
-            // if (type == "ClearImageNode") {
-            //     allNodes[k] = new ClearImageNode();
-            //     inputNodes.push_back((LoopyInputNode*)allNodes[k]);
             // }
             if (type == "ImageNode") {
                 //This is a quick hack for right now to handle filenames as parameters.

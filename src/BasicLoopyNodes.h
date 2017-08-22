@@ -7,6 +7,8 @@
 #include "LinearTransformations.h"
 #include "BinaryPixelOperators.h"
 
+using namespace std;
+
 /**
  * This file contains some basic LoopyNodes that I feel will be useful for lots of situations.
  */
