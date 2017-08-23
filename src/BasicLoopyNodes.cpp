@@ -91,6 +91,17 @@ cv::Mat ImageNode::process(LoopyFunctionInput inputs)
     return output;
 }
 
+cv::Mat TickerNode::process(LoopyFunctionInput inputs)
+{
+    float amount = 1;
+    if (inputs.count("amount") > 0) {
+        amount = getFloatParam("amount");
+    }
+
+    output.at<float>(0, 0) = output.at<float>(0, 0) + amount;
+    return output;
+}
+
 
 // cv::Mat SineNode::process(LoopyFunctionInput inputs)
 // {

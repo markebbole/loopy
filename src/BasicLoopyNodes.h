@@ -72,6 +72,21 @@ public:
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
 
+class TickerNode : public LoopyNode
+{
+public:
+    TickerNode(std::string outputKey) : LoopyNode(outputKey)
+    {
+        output = cv::Mat::zeros(1, 1, CV_32F);
+    }
+
+    TickerNode() : TickerNode(std::to_string(LoopyNode::nextId++))
+    {
+    }
+
+    virtual cv::Mat process(LoopyFunctionInput inputs);
+};
+
 // struct SineNode : public LoopyNode
 // {
 //     std::string imageKey = "imageKey";

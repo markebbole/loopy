@@ -95,7 +95,6 @@ void LoopyGraphState::parseJson(json& j)
             }
             if (type == "TickerNode") {
                 allNodes[k] = new TickerNode();
-                inputNodes.push_back((LoopyInputNode*)allNodes[k]);
             }
             // if (type == "SineNode") {
             //     allNodes[k] = new SineNode();
