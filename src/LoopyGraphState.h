@@ -7,12 +7,14 @@
 #include "LinearTransformations.h"
 
 #include <string>
+#include <fstream>
 #include <map>
 #include <vector>
 #include "json.hpp"
 
 using namespace std;
 using json = nlohmann::json;
+
 
 class LoopyGraphState
 {
@@ -30,7 +32,7 @@ public:
 
     LoopyGraphState() {}
 
-    void readGraphFromFile(string filename);
+    void readGraphFromFile(std::ifstream& file);
 
     void destroyAll();
 

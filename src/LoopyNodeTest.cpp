@@ -9,19 +9,35 @@
 #include "BasicLoopyNodes.h"
 #include "LinearTransformations.h"
 #include "LoopyGraphState.h"
+#include <fstream>
+
+using namespace std;
+
+ifstream readFileName()
+{
+    string file;
+    cin >> file;
+    ifstream ifs(file);
+    while (ifs.fail()) {
+        cout << "File does not exist. Enter new file: ";
+        cin >> file;
+        ifs.open(file);
+    }
+
+    return ifs;
+}
 
 int main()
 {
     cv::namedWindow( "Display window", cv::WINDOW_AUTOSIZE );// Create a window for display.
 
-    std::cout << "F: enter new file path to read\n" <<
+    cout << "F: enter new file path to read\n" <<
                  "R: Refresh the graph using the current file\n";
-    std::cout << "To start, type in a path to a graph file: ";
-    std::string file;
-    cin >> file;
+    cout << "To start, type in a path to a graph file: ";
 
     LoopyGraphState lgs;
-    lgs.readGraphFromFile(file);
+    ifstream ifs = readFileName();
+    lgs.readGraphFromFile(ifs);
 
     while (true) {
         lgs.setAllInputsReady();
@@ -30,20 +46,19 @@ int main()
         int key = cv::waitKey(0);
         // 114 = r
         if (key == 114) {
-            //lgs.destroyAll();
-            lgs.readGraphFromFile(file);
+            lgs.readGraphFromFile(ifs);
         }
 
         if (key == 102) {
-            cout << "Type in a path to a graph file: ";
-            cin >> file;
-            //lgs.destroyAll();
-            lgs.readGraphFromFile(file);
+            ifs.close();
+            cout << "Type in a path to a new graph file: ";
+            ifs = readFileName();
+            lgs.readGraphFromFile(ifs);
         }
 
         if (key == 113) {
             lgs.destroyAll();
-            lgs.readGraphFromFile(file);
+            lgs.readGraphFromFile(ifs);
         }
     }
 }
