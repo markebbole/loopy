@@ -18,8 +18,8 @@ cv::Mat BinaryNode::process(LoopyFunctionInput inputs)
 
 	cv::Mat output = cv::Mat(maxR, maxC, first.type());
 
-	float f = inputs.count("foregroundMultiplier") > 0 ? getFloatParam("foregroundMultiplier") : 1;
-	float b = inputs.count("backgroundMultiplier") > 0 ? getFloatParam("backgroundMultiplier") : (1 - f);
+	float f = getFloatParam("foregroundMultiplier", 1);
+	float b = getFloatParam("backgroundMultiplier", 1 - f);
 
 	for (int r = 0; r < maxR; ++r) {
 		for (int c = 0; c < maxC; ++c) {
@@ -93,32 +93,17 @@ cv::Mat ImageNode::process(LoopyFunctionInput inputs)
 
 cv::Mat TickerNode::process(LoopyFunctionInput inputs)
 {
-    float amount = 1;
-    if (inputs.count("amount") > 0) {
-        amount = getFloatParam("amount");
-    }
-
+    float amount = getFloatParam("amount", 1);
     output.at<float>(0, 0) = output.at<float>(0, 0) + amount;
     return output;
 }
 
 cv::Mat SineNode::process(LoopyFunctionInput inputs)
 {
-    float amplitude = 1;
-    if (inputs.count("amplitude") > 0) {
-        amplitude = getFloatParam("amplitude");
-    }
-    float period = 1;
-    if (inputs.count("period") > 0) {
-        period = getFloatParam("period");
-    }
-    float offset = 0;
-    if (inputs.count("offset") > 0) {
-        offset = getFloatParam("offset");
-    }
-
+    float amplitude = getFloatParam("amplitude", 1);
+    float period = getFloatParam("period", 1);
+    float offset = getFloatParam("offset", 0);
     float time = getFloatParam("time");
-
     output.at<float>(0, 0) = amplitude * sin(time * period) + offset;
     return output;
 }
