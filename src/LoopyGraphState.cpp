@@ -138,7 +138,6 @@ void LoopyGraphState::parseParams(LoopyNode* node, json& paramObject)
             // FOR NOW, we will assume that when a string value exists
             // but it's not a node name, it's actually a file????
             if (allNodes.count(p) == 0) {
-                //hackiest thing i've ever done
                 LoopyInputNode* dummyInput = new LoopyInputNode();
                 allNodes[dummyInput->outputKey] = dummyInput;
                 inputNodes.push_back(dummyInput);
