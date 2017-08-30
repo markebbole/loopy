@@ -84,14 +84,41 @@ float LoopyNode::getFloatParam(string paramName)
     return v;
 }
 
+float LoopyNode::getFloatParam(string paramName, float defaultValue)
+{
+    if (inputs.count(paramName) == 0) {
+        return defaultValue;
+    }
+
+    return getFloatParam(paramName);
+}
+
 int LoopyNode::getIntParam(string paramName)
 {
     int v = (int)floor(getFloatParam(paramName));
     return v;
 }
 
+int LoopyNode::getIntParam(string paramName, int defaultValue)
+{
+    if (inputs.count(paramName) == 0) {
+        return defaultValue;
+    }
+
+    return getIntParam(paramName);
+}
+
 bool LoopyNode::getBoolParam(string paramName)
 {
     int v = getIntParam(paramName);
     return v != 0;
+}
+
+bool LoopyNode::getBoolParam(string paramName, bool defaultValue)
+{
+    if (inputs.count(paramName) == 0) {
+        return defaultValue;
+    }
+
+    return getBoolParam(paramName);
 }

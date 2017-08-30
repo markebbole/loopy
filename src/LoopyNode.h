@@ -92,9 +92,15 @@ protected:
 
     float getFloatParam(std::string paramName);
 
+    float getFloatParam(std::string paramName, float defaultValue);
+
     bool getBoolParam(std::string paramName);
 
+    bool getBoolParam(std::string paramName, bool defaultValue);
+
     int getIntParam(std::string paramName);
+
+    int getIntParam(std::string paramName, int defaultValue);
 
 public:
     /**
