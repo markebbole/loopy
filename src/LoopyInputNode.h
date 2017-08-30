@@ -26,6 +26,13 @@ public:
     {
     }
 
+    virtual cv::Mat process(LoopyFunctionInput inputs)
+    {
+        // Todo: find a better way to do this.
+        std::cout << "You shouldn't call process on a LoopyInputNode." << std::endl;
+        return cv::Mat(0, 0, 0);
+    }
+
 };
 
 class LoopyNumberNode : public LoopyInputNode

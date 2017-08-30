@@ -66,13 +66,6 @@ void LoopyNode::notifyReceivers()
     }
 }
 
-cv::Mat LoopyNode::process(LoopyFunctionInput inputs)
-{
-    std::cout << "whoa there!!! you just called the processing function of a base LoopyNode" << std::endl;
-    cv::Mat newImage = cv::Mat(0, 0, 0);
-    return newImage;
-}
-
 float LoopyNode::getFloatParam(string paramName)
 {
     if (inputs.count(paramName) == 0) {

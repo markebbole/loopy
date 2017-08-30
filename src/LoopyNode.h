@@ -177,7 +177,7 @@ public:
      * this gets called with the inputs map defined above.
      */
 
-    virtual cv::Mat process(LoopyFunctionInput inputs);
+    virtual cv::Mat process(LoopyFunctionInput inputs) = 0;
 };
 
 #endif
