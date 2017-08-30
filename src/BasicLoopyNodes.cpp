@@ -102,32 +102,23 @@ cv::Mat TickerNode::process(LoopyFunctionInput inputs)
     return output;
 }
 
+cv::Mat SineNode::process(LoopyFunctionInput inputs)
+{
+    float amplitude = 1;
+    if (inputs.count("amplitude") > 0) {
+        amplitude = getFloatParam("amplitude");
+    }
+    float period = 1;
+    if (inputs.count("period") > 0) {
+        period = getFloatParam("period");
+    }
+    float offset = 0;
+    if (inputs.count("offset") > 0) {
+        offset = getFloatParam("offset");
+    }
 
-// cv::Mat SineNode::process(LoopyFunctionInput inputs)
-// {
-// 	const cv::Mat& image = inputs[imageKey]->getOutput();
-// 	cv::Mat newImage = cv::Mat(image.rows, image.cols, image.type());
+    float time = getFloatParam("time");
 
-// 	float waveDiff = getFloatParam("waveDiff");
-//     float frequency = getFloatParam("frequency");
-//     float updateWave = getFloatParam("updateWave");
-//     float red = getFloatParam("red");
-//     float green = getFloatParam("green");
-//     float blue = getFloatParam("blue");
-
-// 	int pixelCounter = 0;
-// 	int norm = image.rows * image.cols;
-// 	for (int r = 0; r < image.rows; ++r) {
-// 	    for(int c = 0; c < image.cols; ++c) {
-// 	    	float s = (1 + sin(updateWave + frequency*pixelCounter)) / 2;
-// 	    	newImage.at<cv::Vec4b>(r,c) = cv::Vec4b(blue + s * 150, green, red + 70 * sqrt(s), 255);
-// 	    }
-// 	    pixelCounter++;
-	    
-
-// 	}
-// 	//functionInputs["updateWave"] = updateWave + waveDiff;
-
-	
-// 	return newImage;
-// }
+    output.at<float>(0, 0) = amplitude * sin(time * period) + offset;
+    return output;
+}
