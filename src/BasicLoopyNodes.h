@@ -102,6 +102,6 @@ public:
     }
 
     virtual cv::Mat process(LoopyFunctionInput inputs);
-}
+};
 
 #endif
