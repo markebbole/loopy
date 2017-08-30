@@ -93,9 +93,9 @@ void LoopyGraphState::parseJson(json& j)
             if (type == "TickerNode") {
                 allNodes[k] = new TickerNode();
             }
-            // if (type == "SineNode") {
-            //     allNodes[k] = new SineNode();
-            // }
+            if (type == "SineNode") {
+                allNodes[k] = new SineNode();
+            }
             if (type == "ImageNode") {
                 //This is a quick hack for right now to handle filenames as parameters.
                 //I'm doing this right now because nodes can only have matrices as input.
