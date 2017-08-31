@@ -31,6 +31,13 @@ public:
     {
     }
 
+    virtual ~BinaryNode()
+    {
+        if (op != NULL) {
+            delete op;
+        }
+    }
+
     virtual cv::Mat process(LoopyFunctionInput inputs);
 };
  
