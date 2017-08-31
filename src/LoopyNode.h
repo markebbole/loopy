@@ -8,11 +8,12 @@
 #include <map>
 #include "json.hpp"
 using json = nlohmann::json;
+using namespace std;
 
 class LoopyNode;
 
-typedef std::function<cv::Mat (std::map<std::string, LoopyNode *>)> LoopyFunction;
-typedef std::map<std::string, LoopyNode *> LoopyFunctionInput;
+typedef function<cv::Mat (map<string, LoopyNode *>)> LoopyFunction;
+typedef map<string, LoopyNode *> LoopyFunctionInput;
 
 
 /**
@@ -28,13 +29,13 @@ struct InputConnection
 {
     LoopyNode *inputNode;
     bool enforceOnFirstRun;
-    std::string parameterName;
+    string parameterName;
 
-    InputConnection(LoopyNode *node, std::string parameterName) : InputConnection(node, parameterName, true)
+    InputConnection(LoopyNode *node, string parameterName) : InputConnection(node, parameterName, true)
     {
     }
 
-    InputConnection(LoopyNode *node, std::string parameterName, bool enforceOnFirstRun)
+    InputConnection(LoopyNode *node, string parameterName, bool enforceOnFirstRun)
     {
         this->inputNode = node;
         this->enforceOnFirstRun = enforceOnFirstRun;
@@ -56,22 +57,22 @@ protected:
      * A map from InputConnection parameterNames to LoopyNodes.
      * This stores all a node's inputs
      */
-    std::map<std::string, LoopyNode*>inputs;
+    map<string, LoopyNode*>inputs;
 
     /**
      * A mapping from LoopyNode outputKeys to InputConnection parameterNames
      */
-    std::map<std::string, std::string>inputNameMapping;
+    map<string, string>inputNameMapping;
 
     /**
      * A vector that stores all of this node's InputConnections.
      */
-    std::vector<InputConnection> inputConnections;
+    vector<InputConnection> inputConnections;
 
     /**
      * Child nodes that receive this node's output when it's ready.
      */
-    std::vector<LoopyNode *>outputReceivers;
+    vector<LoopyNode *>outputReceivers;
 
     /**
      * A matrix that represents this node's output.
@@ -90,23 +91,23 @@ protected:
      */
     void notifyReceivers();
 
-    float getFloatParam(std::string paramName);
+    float getFloatParam(string paramName);
 
-    float getFloatParam(std::string paramName, float defaultValue);
+    float getFloatParam(string paramName, float defaultValue);
 
-    bool getBoolParam(std::string paramName);
+    bool getBoolParam(string paramName);
 
-    bool getBoolParam(std::string paramName, bool defaultValue);
+    bool getBoolParam(string paramName, bool defaultValue);
 
-    int getIntParam(std::string paramName);
+    int getIntParam(string paramName);
 
-    int getIntParam(std::string paramName, int defaultValue);
+    int getIntParam(string paramName, int defaultValue);
 
 public:
     /**
      * A key that identifies this node in the graph.
      */
-    std::string outputKey;
+    string outputKey;
 
     /**
      * This generates keys automatically for LoopyNodes
@@ -117,7 +118,7 @@ public:
      * inputConnections: a vector of InputConnections to this node.
      * outputKey: this node's output key.
      */
-    LoopyNode(std::vector<InputConnection> inputConnections, std::string outputKey)
+    LoopyNode(vector<InputConnection> inputConnections, string outputKey)
     {
         outputIterations = 0;
         this->outputKey = outputKey;
@@ -131,11 +132,11 @@ public:
     /**
      * Constructor with no InputConnections
      */
-    LoopyNode(std::string outputKey) : LoopyNode(std::vector<InputConnection>(), outputKey) 
+    LoopyNode(string outputKey) : LoopyNode(vector<InputConnection>(), outputKey) 
     {
     }
 
-    LoopyNode() : LoopyNode(std::vector<InputConnection>(), std::to_string(LoopyNode::nextId++))
+    LoopyNode() : LoopyNode(vector<InputConnection>(), to_string(LoopyNode::nextId++))
     {
     }
 
@@ -155,7 +156,7 @@ public:
      * add a new node as input with a parameter name and a boolean representing whether
      * this node should wait for the input node's output before running the first iteration
      */
-    void addInput(LoopyNode *node, std::string parameterName, bool enforceOnFirstRun) {
+    void addInput(LoopyNode *node, string parameterName, bool enforceOnFirstRun) {
         addInput(InputConnection(node, parameterName, enforceOnFirstRun));
     }
 
