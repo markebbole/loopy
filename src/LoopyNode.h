@@ -62,7 +62,7 @@ protected:
     /**
      * A mapping from LoopyNode outputKeys to InputConnection parameterNames
      */
-    map<string, string>inputNameMapping;
+    map<string, vector<string>>inputNameMapping;
 
     /**
      * A vector that stores all of this node's InputConnections.

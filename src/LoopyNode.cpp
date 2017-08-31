@@ -12,8 +12,10 @@ bool LoopyNode::allInputsReady()
         if (outputIterations == 0 && !inputConnections[i].enforceOnFirstRun) {
             continue;
         }
+        vector<string> nameMappings = inputNameMapping[inputConnections[i].inputNode->outputKey];
 
-        if (inputs.count(inputNameMapping[inputConnections[i].inputNode->outputKey]) == 0) {
+        // We only have to check the first mapped name since if that one exists then all the others do, too.
+        if (inputs.count(nameMappings[0]) == 0) {
             return false;
         }
     }
@@ -29,7 +31,7 @@ void LoopyNode::addInput(InputConnection ic)
     ic.inputNode->outputReceivers.push_back(this);
     // An InputConnection has a desired parameterName that will be used in this node's LoopyFunction.
     // We have to store this translation in inputNameMapping.
-    inputNameMapping[ic.inputNode->outputKey] = ic.parameterName;
+    inputNameMapping[ic.inputNode->outputKey].push_back(ic.parameterName);
 }
 
 void LoopyNode::inputReady(LoopyNode* node)
@@ -39,7 +41,10 @@ void LoopyNode::inputReady(LoopyNode* node)
         exit(1);
     }
     // Translate the node's outputKey to the parameterName specified in the corresponding InputConnection.
-    inputs[inputNameMapping[node->outputKey]] = node;
+    vector<string> mappedNames = inputNameMapping[node->outputKey];
+    for (auto it = mappedNames.begin(); it != mappedNames.end(); ++it) {
+        inputs[*it] = node;
+    }
 
     // If all input nodes are ready then call this node's LoopyFunction and store the output.
     // Then notify all nodes that have this node as an InputConnection that output is ready.
